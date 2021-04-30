@@ -1,4 +1,6 @@
-const scraper = {
+const output = require("./output");
+
+const worker = {
     async getBooks(browser){
         let page = await browser.newPage();
         let url = 'https://bible.usccb.org/bible'
@@ -43,7 +45,8 @@ const scraper = {
             list = ['']
             for(element of elements){
                 for(child of element.childNodes){
-                    if(!child.firstChild && child.textContent.trim().length > 0){
+                    // Hack to get rid of all the subscripts but keep the L<small>ORD</small>
+                    if((!child.firstChild || child.outerText == 'ORD') && child.textContent.trim().length > 0){
                         list.push(child.textContent.trim());
                     }                       
                 }
@@ -52,10 +55,10 @@ const scraper = {
         });
 
         // Create the chapter as a string from the verses
-        const text = verses.join(' ').trim();
+        let text = verses.join(' ').trim();
 
-        // Save the information
-        this.saveChapter(book, chapter, text);
+        // Respect the name -- this is caused by the L<small>ORD</small> convention of site
+        text = text.replace(/L ORD/g, 'LORD');
 
         // Wait for the link to the next chapter
         await page.waitForSelector('.pager__item.pager__item--next');
@@ -89,9 +92,27 @@ const scraper = {
         // This will let the controller know to go to the next book.
         return result;
     },
-    saveChapter(book, chapter, text){
-        console.log(`Saving ${book} chapter ${chapter}...`);
+    startNextBook(){
+        return output.newDocument();
+    },
+    buildDocument(currentDocument, additions){
+        if(parseInt(additions.chapter) == 1)
+            currentDocument += output.book(additions.book);
+        
+        currentDocument += output.chapter(additions.chapter);
+        currentDocument += output.text(additions.text)
+        
+        if(additions.url)
+            currentDocument += output.separator();
+        else{
+            currentDocument += output.footer();
+        }
+
+        return currentDocument;
+    },
+    saveBookAsHTML(html){
+        console.log(html);
     }
 }
 
-module.exports = scraper;
+module.exports = worker;
