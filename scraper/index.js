@@ -1,5 +1,5 @@
 const browser = require('./browser');
-const scrapePagesUsing = require('./page-controller');
+const manager = require('./manager');
 
-let chromeHeadless = browser.startBrowser();
-scrapePagesUsing(chromeHeadless);
+let chrome = browser.startBrowser();
+manager(chrome);

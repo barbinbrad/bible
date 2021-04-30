@@ -21,17 +21,23 @@ const scraper = {
             return list;
         });       
     },
-
-    async scrapePage(browser, url){
+    async getChapter(browser, url){
         // Navigate to the page
         let page = await browser.newPage();
         console.log(`Navigating to ${url}...`);
         await page.goto(url);
 
-        // Wait for the required DOM to be rendered
-        await page.waitForSelector('.contentarea');
+        // Get the chapter
+        const chapter = url.substring(url.lastIndexOf('/') + 1);
+
+        // Get the book name
+        await page.waitForSelector('.title-page');
+        const book = await page.evaluate(() => {
+            return document.querySelector('.title-page').textContent.trim();
+        });
 
         // Load the verses into an array of strings
+        await page.waitForSelector('.contentarea');
         const verses = await page.evaluate(() => {
             const elements = document.querySelectorAll('.txt');                     
             list = ['']
@@ -46,10 +52,10 @@ const scraper = {
         });
 
         // Create the chapter as a string from the verses
-        const chapterText = verses.join(' ').trim();
-        console.log(chapterText);
+        const text = verses.join(' ').trim();
 
-        this.saveChapter('Book', 'Chapter', chapterText);
+        // Save the information
+        this.saveChapter(book, chapter, text);
 
         // Wait for the link to the next chapter
         await page.waitForSelector('.pager__item.pager__item--next');
@@ -68,18 +74,23 @@ const scraper = {
 
         // Decide whether this is the end the chapter based on whether a link is shown
         const endOfChapter = links.length == 0;  
-        
+
+        const result = {
+            url:  endOfChapter ? null : links[0],
+            book: book,
+            chapter: chapter,
+            text: text,
+        };
+
         // Close the page
         page.close();
         
         // If this is the end of a chapter, return a null value. 
         // This will let the controller know to go to the next book.
-        return endOfChapter ? null : links[0];
+        return result;
     },
     saveChapter(book, chapter, text){
-        console.log(book);
-        console.log(chapter);
-        console.log(text);
+        console.log(`Saving ${book} chapter ${chapter}...`);
     }
 }
 

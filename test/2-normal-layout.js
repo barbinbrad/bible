@@ -1,23 +1,20 @@
 const puppeteer = require('puppeteer');
 const { expect }  = require('chai');
-
+const browser = require('../scraper/browser');
 
 describe('Bible Scraping Page Layout Test', () => {
 
-    let browser;
+    let chrome;
     let page;
 
     beforeEach(async () => { 
-        browser = await puppeteer.launch({
-            headless: true,
-            executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-        });
-        page = await browser.newPage();
+        chrome = await browser.startBrowser();
+        page = await chrome.newPage();
         await page.goto('https://bible.usccb.org/bible/genesis/1');
     });
 
     afterEach(async () => { 
-        await browser.close();
+        await chrome.close();
     });
 
     it('should have the correct page title', async () => {       
@@ -49,6 +46,15 @@ describe('Bible Scraping Page Layout Test', () => {
         });
         
         expect(verses[1]).to.contain('In the beginning');
+    });
+
+    it('should have the title of the book', async () => {
+        await page.waitForSelector('.title-page');
+        const book = await page.evaluate(() => {
+            return document.querySelector('.title-page').textContent.trim();
+        });
+
+        expect(book).to.contain('Genesis');
     });
 
     it('should have a link to the next chapter', async () => {

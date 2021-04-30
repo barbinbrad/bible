@@ -1,11 +1,8 @@
-const scraper = require('./page-scraper');
+const scraper = require('./worker');
 
-async function scrapePagesUsing(browserInstance){
-    let browser;
-    
-    try{
-        
-        browser = await browserInstance;        
+async function manage(browserPromise){
+    let browser = await browserPromise;
+    try{      
         
         // Load a list of books
         let books = await scraper.getBooks(browser);
@@ -16,17 +13,24 @@ async function scrapePagesUsing(browserInstance){
             i++; 
         }
 
-        // Set the starting point
+        // Set the starting state
         let url = `${books[i]}/1`;
         let scraping = true;
+        // let html = htmlHeader;
+        // let chapterCount = 
 
-        while(true){
+        while(scraping){
             
             if(url){
                 // Scrape the next chapter link from the page
-                url = await scraper.scrapePage(browser, url);
+                feedback = await scraper.getChapter(browser, url);
+                url = feedback.url;
             } 
             else{
+
+                // html += htmlFooter;
+
+
                 // If there is no next chapter link, go to the next book
                 if(i < books.length - 1){
                     i++;
@@ -51,4 +55,4 @@ async function scrapePagesUsing(browserInstance){
     }
 }
 
-module.exports = (browserInstance) => scrapePagesUsing(browserInstance)
+module.exports = (promise) => manage(promise)

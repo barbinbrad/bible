@@ -1,22 +1,20 @@
 const puppeteer = require('puppeteer');
 const { expect }  = require('chai');
+const browser = require('../scraper/browser');
 
 describe('Bible Scraping Books List', () => {
 
-    let browser;
+    let chrome;
     let page;
 
     beforeEach(async () => { 
-        browser = await puppeteer.launch({
-            headless: true,
-            executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-        });
-        page = await browser.newPage();
+        chrome = await browser.startBrowser();
+        page = await chrome.newPage();
         await page.goto('https://bible.usccb.org/bible');
     });
 
     afterEach(async () => { 
-        await browser.close();
+        await chrome.close();
     });
 
     it('should have the correct page title', async () => {       
