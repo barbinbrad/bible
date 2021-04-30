@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const { expect }  = require('chai');
-const utils = require('../common/utils');
+
 
 describe('Bible Scraping Page Layout Test', () => {
 

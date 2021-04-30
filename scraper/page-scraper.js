@@ -1,6 +1,27 @@
-const utils = require('../common/utils')
-
 const scraper = {
+    async getBooks(browser){
+        let page = await browser.newPage();
+        let url = 'https://bible.usccb.org/bible'
+        console.log(`Navigating to ${url}...`);
+        await page.goto(url);
+
+        await page.waitForSelector('ul.content li');
+
+        return await page.evaluate(() => {
+            const elements = document.querySelectorAll('ul.content li a');                     
+            list = [];
+            for(element of elements){
+                if(element.href){
+                    let link = element.href;
+                    // remove the /0 from the end of the link to avoid introductions
+                    link = link.substring(0, link.lastIndexOf('/')); 
+                    list.push(link);
+                }
+            }
+            return list;
+        });       
+    },
+
     async scrapePage(browser, url){
         // Navigate to the page
         let page = await browser.newPage();
@@ -25,8 +46,10 @@ const scraper = {
         });
 
         // Create the chapter as a string from the verses
-        const chapter = verses.join(' ').trim();
-        console.log(chapter);
+        const chapterText = verses.join(' ').trim();
+        console.log(chapterText);
+
+        this.saveChapter('Book', 'Chapter', chapterText);
 
         // Wait for the link to the next chapter
         await page.waitForSelector('.pager__item.pager__item--next');
@@ -48,10 +71,15 @@ const scraper = {
         
         // Close the page
         page.close();
-
+        
         // If this is the end of a chapter, return a null value. 
         // This will let the controller know to go to the next book.
         return endOfChapter ? null : links[0];
+    },
+    saveChapter(book, chapter, text){
+        console.log(book);
+        console.log(chapter);
+        console.log(text);
     }
 }
 

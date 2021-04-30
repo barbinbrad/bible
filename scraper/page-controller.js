@@ -1,38 +1,52 @@
 const scraper = require('./page-scraper');
-const books = require('../common/books');
 
 async function scrapePagesUsing(browserInstance){
     let browser;
-    let book = 0;
-
-    let url = `https://bible.usccb.org/bible/${books[book]}/1`
+    
     try{
         
-        browser = await browserInstance;
-        scraping = true;
+        browser = await browserInstance;        
         
+        // Load a list of books
+        let books = await scraper.getBooks(browser);
+        let i = 0;
+        
+        // Skip the preface
+        if(books[i].includes('preface')){
+            i++; 
+        }
+
+        // Set the starting point
+        let url = `${books[i]}/1`;
+        let scraping = true;
+
         while(true){
             
             if(url){
+                // Scrape the next chapter link from the page
                 url = await scraper.scrapePage(browser, url);
             } 
             else{
-                if(book < books.length - 1){
-                    book++;
-                    url = `https://bible.usccb.org/bible/${books[book]}/1`
+                // If there is no next chapter link, go to the next book
+                if(i < books.length - 1){
+                    i++;
+                    url = `${books[i]}/1`
                 }
                 else{
+                    // If there is no next book, stop scraping
                     scraping = false;
-                }
-                
-            }
-            
+                }               
+            }           
         }
-
+        // Tidy up
         browser.close();
 
     }
     catch(err){
+        // Tidy up on error
+        if(browser){
+            browser.close();
+        }
         console.log("Could not resolve the browser instance => ", err);
     }
 }
