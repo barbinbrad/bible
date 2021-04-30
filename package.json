@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node scraper/index.js",
-    "test": "mocha --recursive test"
+    "test": "mocha --recursive test --timeout 10000"
   },
   "author": "Brad Barbin",
   "license": "MIT",

@@ -13,7 +13,7 @@ describe('Bible Scraping Page Layout Test', () => {
             executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
         });
         page = await browser.newPage();
-        await page.goto('https://bible.usccb.org/bible/genesis/1', {waitUntil: 'load', timeout: 5000});
+        await page.goto('https://bible.usccb.org/bible/genesis/1');
     });
 
     afterEach(async () => { 

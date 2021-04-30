@@ -12,7 +12,7 @@ describe('Bible Scraping Books List', () => {
             executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
         });
         page = await browser.newPage();
-        await page.goto('https://bible.usccb.org/bible', {waitUntil: 'load', timeout: 5000});
+        await page.goto('https://bible.usccb.org/bible');
     });
 
     afterEach(async () => { 
@@ -40,6 +40,7 @@ describe('Bible Scraping Books List', () => {
         });
 
         expect(books[0]).to.contain('bible');
+        expect(books[0]).to.contain('http');
         expect(books.length).to.greaterThanOrEqual(73);
     });
 
