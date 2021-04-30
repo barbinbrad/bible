@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const { expect }  = require('chai');
-//const html = require('../common/html.js').default;
+const utils = require('../common/utils');
 
 describe('Bible Scraping Page Layout Test', () => {
 
@@ -25,6 +25,7 @@ describe('Bible Scraping Page Layout Test', () => {
     });
 
     it('should have a list containers with the txt class', async () => {
+        await page.waitForSelector('.contentarea');
         const verses = await page.evaluate(() => {
             return Array.from(document.querySelectorAll('.txt'));
         });
@@ -32,9 +33,10 @@ describe('Bible Scraping Page Layout Test', () => {
     });
 
     it('should have "In the beginning" in the first', async () => {
-
+        await page.waitForSelector('.contentarea');
         const verses = await page.evaluate(() => {
             const elements = document.querySelectorAll('.txt');
+                      
             list = ['']
             for(element of elements){
                 for(child of element.childNodes){
@@ -47,6 +49,15 @@ describe('Bible Scraping Page Layout Test', () => {
         });
         
         expect(verses[1]).to.contain('In the beginning');
+    });
+
+    it('should have a link to the next chapter', async () => {
+        await page.waitForSelector('.pager__item.pager__item--next');
+        const link = await page.evaluate(() => {
+            return Array.from(document.querySelectorAll('.pager__item.pager__item--next a'));
+        });
+        
+        expect(link.length).to.be.greaterThan(0);
     });
 
 });
