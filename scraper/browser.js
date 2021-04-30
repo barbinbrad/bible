@@ -9,7 +9,7 @@ async function startBrowser(){
             chromePath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
             break;
         case 'darwin':
-            chromePath = '/Applications/Google Chrome.app'
+            chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
             break;
         case 'linux':
             const process = require('child_process');
