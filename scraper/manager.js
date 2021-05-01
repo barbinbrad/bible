@@ -20,7 +20,6 @@ async function manage(browserPromise){
         let scraping = true;
         let bookSaved = false;
         let result = {};
-        
 
         while(scraping){
             
@@ -32,7 +31,7 @@ async function manage(browserPromise){
             } 
             else{
                 fileName = worker.getFileNameFromLink(books[i]);
-                bookSaved = await worker.saveBookAsHTML(fileName, html);
+                bookSaved = await worker.saveAsHTML(fileName, html);
                 
                 if(!bookSaved){
                     console.error('Failed to save book as HTML');
@@ -49,6 +48,10 @@ async function manage(browserPromise){
                 else{
                     // If there is no next book, stop scraping
                     scraping = false;
+
+                    // Generate the table of contents
+                    html = await worker.buildTableOfContents(browser, books);
+                    await worker.saveAsHTML('index', html);
                 }               
             }           
         }

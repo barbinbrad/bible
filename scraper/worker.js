@@ -1,7 +1,7 @@
 const fs = require('fs').promises
 const mkdirp = require('mkdirp');
 
-const {bookTemplate} = require("./output");
+const {bookTemplate, contentsTemplate} = require("./output");
 
 const worker = {
     async getBooks(browser){
@@ -25,6 +25,9 @@ const worker = {
             }
             return list;
         });       
+    },
+    getFileNameFromLink(link){
+        return link.substring(link.lastIndexOf('/') + 1);
     },
     async getTitle(browser, url){
         // Navigate to the page
@@ -130,7 +133,7 @@ const worker = {
 
         return currentDocument;
     },
-    async saveBookAsHTML(title, html){
+    async saveAsHTML(title, html){
         try{
             path = './output/generated';
             await mkdirp(path);
@@ -148,9 +151,21 @@ const worker = {
             return false;
         }
     },
-    getFileNameFromLink(link){
-        return link.substring(link.lastIndexOf('/') + 1);
-    }
+    async buildTableOfContents(browser, links){
+        console.log('Building table of contents...');
+        let html = contentsTemplate.newDocument();
+
+        for(let i=1; i<links.length; i++){
+            let slug = this.getFileNameFromLink(links[i]);
+            let url = `./${slug}.html`;
+            let title = await this.getTitle(browser, `${links[i]}/1`);
+            if(links[i].indexOf('preface') == -1)
+                html += contentsTemplate.book(title, url);
+        }
+        html += contentsTemplate.footer();
+        return html;
+    },
+    
 }
 
 module.exports = worker;
