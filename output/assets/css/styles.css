@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+
+body{
+    margin: 0 auto;
+    max-width: 40em;
+    font-family: 'Lora', Arial, Helvetica, sans-serif;
+    padding: 0 2em;
+}
+
+
+h2{
+    text-align: center;
+    font-size: 4em;
+    font-weight: bold;
+    color: #2d2d2d;
+    letter-spacing: -0.04em;
+    margin: 2em 0;
+}
+
+h3{
+    color: #AAA;
+    font-size: 1.5em;
+}
+
+p{
+    font-size: 1.2em;
+    color: #333;
+    line-height: 1.75;
+}
+
+hr{
+    margin: 5em 0;
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+@media only screen and (max-width: 720px) {
+    body{
+        padding: 0 1em;
+    }
+    
+    h2{
+        font-size: 2em;
+    }
+
+}
