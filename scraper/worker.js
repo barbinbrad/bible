@@ -1,10 +1,13 @@
-const output = require("./output");
+const fs = require('fs').promises
+const mkdirp = require('mkdirp');
+
+const {bookTemplate} = require("./output");
 
 const worker = {
     async getBooks(browser){
         let page = await browser.newPage();
         let url = 'https://bible.usccb.org/bible'
-        console.log(`Navigating to ${url}...`);
+        console.log(`Scraping links from ${url}...`);
         await page.goto(url);
 
         await page.waitForSelector('ul.content li');
@@ -23,10 +26,27 @@ const worker = {
             return list;
         });       
     },
+    async getTitle(browser, url){
+        // Navigate to the page
+        let page = await browser.newPage();
+        console.log(`Scraping title from ${url}...`);
+        await page.goto(url);
+
+        // Get the chapter
+        const chapter = url.substring(url.lastIndexOf('/') + 1);
+
+        // Get the book name
+        await page.waitForSelector('.title-page');
+        const book = await page.evaluate(() => {
+            return document.querySelector('.title-page').textContent.trim();
+        });
+
+        return book;
+    },
     async getChapter(browser, url){
         // Navigate to the page
         let page = await browser.newPage();
-        console.log(`Navigating to ${url}...`);
+        console.log(`Scraping contents from ${url}...`);
         await page.goto(url);
 
         // Get the chapter
@@ -88,30 +108,48 @@ const worker = {
         // Close the page
         page.close();
         
-        // If this is the end of a chapter, return a null value. 
+        // If this is the end of a chapter, return a null url. 
         // This will let the controller know to go to the next book.
         return result;
     },
     startNextBook(){
-        return output.newDocument();
+        return bookTemplate.newDocument();
     },
-    buildDocument(currentDocument, additions){
+    buildBook(currentDocument, additions){
         if(parseInt(additions.chapter) == 1)
-            currentDocument += output.book(additions.book);
+            currentDocument += bookTemplate.book(additions.book);
         
-        currentDocument += output.chapter(additions.chapter);
-        currentDocument += output.text(additions.text)
+        currentDocument += bookTemplate.chapter(additions.chapter);
+        currentDocument += bookTemplate.text(additions.text)
         
         if(additions.url)
-            currentDocument += output.separator();
+            currentDocument += bookTemplate.separator();
         else{
-            currentDocument += output.footer();
+            currentDocument += bookTemplate.footer();
         }
 
         return currentDocument;
     },
-    saveBookAsHTML(html){
-        console.log(html);
+    async saveBookAsHTML(title, html){
+        try{
+            path = './output/generated';
+            await mkdirp(path);
+            await fs.writeFile(`${path}/${title}.html`, html, err => {
+                if (err) {
+                    console.error(err);    
+                    return false;               
+                }
+                console.log(`Successfully created ${title}.html`);              
+            });
+
+            return true;
+        }
+        catch{
+            return false;
+        }
+    },
+    getFileNameFromLink(link){
+        return link.substring(link.lastIndexOf('/') + 1);
     }
 }
 

@@ -1,43 +1,56 @@
-const output = {
-    header () {
-        let html;
-
-        html =  '<html>'
-        html +=     '<head>';
-        html +=     '</head>';
-        html +=     '<body>';
-
+const bookTemplate = {
+    header (title = '') {
+        let html = '<!DOCTYPE html>';
+        
+        html +=     '<html lang="en">';
+        html +=         '<head>';
+        html +=             '<meta charset="UTF-8">';
+        html +=             '<meta name="viewport" content="width=device-width">';       
+        html +=             `<title>${title}</title>`;
+        html +=             '<link rel="stylesheet" href="../assets/css/styles.css">';
+        html +=             '<link rel="stylesheet" href="../assets/css/print.css" media="print">';        
+        html +=             '<meta name="theme-color" content="#FFFFFF">';
+        html +=         '</head>';
+        html +=         '<body>';
+        html +=             '<script src="../assets/js/xy-polyfill.js" nomodule></script>'
+    
         return html;
     },
 
     book(title){
-        return `<h2>${title}</h2>`;
+        html =              '<div>';
+        html +=                 `<h2>${title}</h2>`;
+        html +=             '</div>';
+        return html;
     },
 
     chapter(number){
-        return `<h3>Chapter ${number}</h3>`
+        html =              `<h3>Chapter ${number}</h3>`;
+        return html;
     },
 
     text(text){
-        return `<p>${text}</p>`;
+        html =              `<p>${text}</p>`;
+        return html;
     },
 
     separator(){
-        return '<hr/>';
+        html =              '<hr/>';
+        return html;
     },
 
     footer () {
         let html;
 
-        html =     '</body>';
-        html += '</html>'
+        html =              '</body>';
+        html +=         '</html>'
         return html;
     },
 
-    newDocument(){
-        return this.header();
+    newDocument(title = ''){
+        return this.header(title);
     }
     
 }
 
-module.exports = output;
+module.exports = {bookTemplate};
