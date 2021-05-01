@@ -115,8 +115,8 @@ const worker = {
         // This will let the controller know to go to the next book.
         return result;
     },
-    startNextBook(){
-        return bookTemplate.newDocument();
+    startNextBook(title){
+        return bookTemplate.newDocument(title);
     },
     buildBook(currentDocument, additions){
         if(parseInt(additions.chapter) == 1)

@@ -12,7 +12,6 @@ const bookTemplate = {
         html +=             '<meta name="theme-color" content="#FFFFFF">';
         html +=         '</head>';
         html +=         '<body>';
-        html +=             '<script src="../assets/js/xy-polyfill.js" nomodule></script>'
     
         return html;
     },
@@ -41,8 +40,8 @@ const bookTemplate = {
 
     footer () {
         let html;
-
-        html =              '</body>';
+        html =              `<footer>Generated with <a href="https://github.com/barbinbrad/king-james">king-james</a> at ${new Date().toLocaleString()}</footer>`;
+        html +=              '</body>';
         html +=         '</html>'
         return html;
     },
@@ -61,14 +60,13 @@ const contentsTemplate = {
         html +=         '<head>';
         html +=             '<meta charset="UTF-8">';
         html +=             '<meta name="viewport" content="width=device-width">';       
-        html +=             '<title>Bible Books</title>';
+        html +=             '<title>Books of the Bible</title>';
         html +=             '<link rel="stylesheet" href="../assets/css/styles.css">';
         html +=             '<link rel="stylesheet" href="../assets/css/print.css" media="print">';        
         html +=             '<meta name="theme-color" content="#FFFFFF">';
         html +=         '</head>';
         html +=         '<body>';
-        html +=             '<script src="../assets/js/xy-polyfill.js" nomodule></script>'
-        html +=             '<h1>The Bible</h1>'
+        html +=             '<h1>Bible</h1>'
         html +=             '<ul>';
         return html;
     },
@@ -83,6 +81,7 @@ const contentsTemplate = {
     footer () {
         let html;
         html =                  '<ul>';
+        html +=                 `<footer>Generated with <a href="https://github.com/barbinbrad/king-james">king-james</a> at ${new Date().toLocaleString()}</footer>`;
         html +=              '</body>';
         html +=         '</html>'
         return html;

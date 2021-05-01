@@ -7,6 +7,38 @@ body{
     padding: 0 2em;
 }
 
+h1{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 6em;
+    font-weight: bold;
+    color: #2d2d2d;
+    letter-spacing: -0.04em;
+}
+
+ul{
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+}
+
+li{
+    margin: 0;
+    padding: 10px 0;
+    list-style: none;
+}
+
+li a{
+    font-size: 2em;
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+}
+
+li a:hover{
+    background-color: #FFFFAA;
+}
+
 
 h2{
     text-align: center;
@@ -38,6 +70,10 @@ hr{
 @media only screen and (max-width: 720px) {
     body{
         padding: 0 1em;
+    }
+
+    h1{
+        font-size: 3.5em;
     }
     
     h2{
