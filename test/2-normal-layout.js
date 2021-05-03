@@ -7,13 +7,13 @@ describe('Bible Scraping Page Layout Test', () => {
     let chrome;
     let page;
 
-    beforeEach(async () => { 
+    before(async () => { 
         chrome = await browser.startBrowser();
         page = await chrome.newPage();
         await page.goto('https://bible.usccb.org/bible/genesis/1');
     });
 
-    afterEach(async () => { 
+    after(async () => { 
         await chrome.close();
     });
 
@@ -24,7 +24,7 @@ describe('Bible Scraping Page Layout Test', () => {
     it('should have a list containers with the txt class', async () => {
         await page.waitForSelector('.contentarea');
         const verses = await page.evaluate(() => {
-            return Array.from(document.querySelectorAll('.txt'));
+            return [...document.querySelectorAll('.txt')];
         });
         expect(verses.length).to.be.greaterThan(20);
     });
@@ -60,7 +60,7 @@ describe('Bible Scraping Page Layout Test', () => {
     it('should have a link to the next chapter', async () => {
         await page.waitForSelector('.pager__item.pager__item--next');
         const link = await page.evaluate(() => {
-            return Array.from(document.querySelectorAll('.pager__item.pager__item--next a'));
+            return [...document.querySelectorAll('.pager__item.pager__item--next a')];
         });
         
         expect(link.length).to.be.greaterThan(0);
