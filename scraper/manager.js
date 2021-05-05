@@ -1,11 +1,13 @@
-const worker = require('./worker');
+const Worker = require('./worker');
 
 async function manage(browserPromise){
     let browser = await browserPromise;
+    let worker = new Worker(browser);
+
     try{      
         
         // Load a list of books
-        let books = await worker.getBooks(browser);
+        let books = await worker.getBooks();
         let i = 0;
         
         // Skip the preface
@@ -15,7 +17,7 @@ async function manage(browserPromise){
 
         // Set the starting state
         let url = `${books[i]}/1`;
-        let title = await worker.getTitle(browser, url);
+        let title = await worker.getTitle(url);
         let html = worker.startNextBook(title);
         let scraping = true;
         let bookSaved = false;
@@ -25,7 +27,7 @@ async function manage(browserPromise){
             
             if(url){
                 // Scrape the next chapter link from the page
-                result = await worker.getChapter(browser, url);
+                result = await worker.getChapter(url);
                 url = result.url;
                 html = worker.buildBook(html, result);              
             } 
@@ -42,7 +44,7 @@ async function manage(browserPromise){
                 if(i < books.length - 1){
                     i++;
                     url = `${books[i]}/1`;
-                    title = await worker.getTitle(browser, url);
+                    title = await worker.getTitle(url);
                     html = worker.startNextBook(title);
                 }
                 else{
@@ -50,19 +52,19 @@ async function manage(browserPromise){
                     scraping = false;
 
                     // Generate the table of contents
-                    html = await worker.buildTableOfContents(browser, books);
+                    html = await worker.buildTableOfContents(books);
                     await worker.saveAsHTML('index', html);
                 }               
             }           
         }
         // Tidy up
-        browser.close();
+        worker.close();
 
     }
     catch(err){
         // Tidy up on error
-        if(browser){
-            browser.close();
+        if(worker){
+            worker.close();
         }
         console.log("Could not resolve the browser instance => ", err);
     }

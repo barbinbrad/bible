@@ -1,11 +1,24 @@
 const fs = require('fs').promises
 const mkdirp = require('mkdirp');
 
-const {bookTemplate, contentsTemplate} = require("./output");
+const {bookTemplate, contentsTemplate} = require('./output');
+const Database = require('../database/database');
+const BooksTable = require('../database/books');
+const VersesTable = require('../database/verses');
 
-const worker = {
-    async getBooks(browser){
-        let page = await browser.newPage();
+class Worker {
+    constructor(browser){
+        this.browser = browser;
+        this.database = new Database('./database/bible.db');
+        this.books = new BooksTable(this.database);
+        this.verses = new VersesTable(this.database);
+
+        this.books.createTable();
+        this.verses.createTable();
+    }
+    
+    async getBooks(){
+        let page = await this.browser.newPage();
         let url = 'https://bible.usccb.org/bible'
         console.log(`Scraping links from ${url}...`);
         await page.goto(url);
@@ -25,13 +38,15 @@ const worker = {
             }
             return list;
         });       
-    },
+    }
+
     getFileNameFromLink(link){
         return link.substring(link.lastIndexOf('/') + 1);
-    },
-    async getTitle(browser, url){
+    }
+    
+    async getTitle(url){
         // Navigate to the page
-        let page = await browser.newPage();
+        let page = await this.browser.newPage();
         console.log(`Scraping title from ${url}...`);
         await page.goto(url);
 
@@ -45,10 +60,11 @@ const worker = {
         });
 
         return book;
-    },
-    async getChapter(browser, url){
+    }
+    
+    async getChapter(url){
         // Navigate to the page
-        let page = await browser.newPage();
+        let page = await this.browser.newPage();
         console.log(`Scraping contents from ${url}...`);
         await page.goto(url);
 
@@ -114,10 +130,12 @@ const worker = {
         // If this is the end of a chapter, return a null url. 
         // This will let the controller know to go to the next book.
         return result;
-    },
+    }
+
     startNextBook(title){
         return bookTemplate.newDocument(title);
-    },
+    }
+
     buildBook(currentDocument, additions){
         if(parseInt(additions.chapter) == 1)
             currentDocument += bookTemplate.book(additions.book);
@@ -132,7 +150,8 @@ const worker = {
         }
 
         return currentDocument;
-    },
+    }
+
     async saveAsHTML(title, html){
         try{
             path = './output/generated';
@@ -150,22 +169,27 @@ const worker = {
         catch{
             return false;
         }
-    },
-    async buildTableOfContents(browser, links){
+    }
+
+    async buildTableOfContents(links){
         console.log('Building table of contents...');
         let html = contentsTemplate.newDocument();
 
         for(let i=1; i<links.length; i++){
             let slug = this.getFileNameFromLink(links[i]);
             let url = `./${slug}.html`;
-            let title = await this.getTitle(browser, `${links[i]}/1`);
+            let title = await this.getTitle(`${links[i]}/1`);
             if(links[i].indexOf('preface') == -1)
                 html += contentsTemplate.book(title, url);
         }
         html += contentsTemplate.footer();
         return html;
-    },
+    }
+
+    close(){
+        this.browser.close();
+    }
     
 }
 
-module.exports = worker;
+module.exports = Worker;
