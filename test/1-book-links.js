@@ -7,13 +7,13 @@ describe('Bible Scraping Books List', () => {
     let chrome;
     let page;
 
-    beforeEach(async () => { 
+    before(async () => { 
         chrome = await browser.startBrowser();
         page = await chrome.newPage();
         await page.goto('https://bible.usccb.org/bible');
     });
 
-    afterEach(async () => { 
+    after(async () => { 
         await chrome.close();
     });
 
