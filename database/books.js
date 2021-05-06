@@ -7,26 +7,33 @@ class BooksTable {
       const sql = `
       CREATE TABLE IF NOT EXISTS books (
         name TEXT PRIMARY KEY NOT NULL,
-        link TEXT NOT NULL)`
-      return this.database.run(sql)
+        display TEXT NOT NULL)`
+      return this.database.run(sql);
     }
 
-    create(name, link) {
+    create(name, display) {
         return this.database.run(
-            'INSERT INTO books (name, link) VALUES (?, ?)',
-            [name, link])
+            'INSERT INTO books (name, display) VALUES (?, ?)',
+            [name, display]);
     }
 
-    update(name, link) {
+    update(name, display) {
         return this.database.run(
-            `UPDATE books SET link = ? WHERE name = name`
-        [link, name])
+            `UPDATE books SET display = ? WHERE name = name`
+        [display, name]);
     }
 
     delete(name){
         return this.database.run(
-            `DELETE books WHERE name = ?`,
-            [name])
+            `DELETE FROM books WHERE name = ?`,
+            [name]);
+    }
+
+    clearTable(){
+        return this.database.run(
+            `DELETE FROM books`,
+            []
+        )
     }
   }
   

@@ -2,19 +2,20 @@ const fs = require('fs').promises
 const mkdirp = require('mkdirp');
 
 const {bookTemplate, contentsTemplate} = require('./output');
-const Database = require('../database/database');
-const BooksTable = require('../database/books');
-const VersesTable = require('../database/verses');
+
+class Work {
+    constructor(){
+        this.book = '';
+        this.slug = '';
+        this.chapter = '';
+        this.verses = [];
+        this.url = null;
+    }
+}
 
 class Worker {
     constructor(browser){
         this.browser = browser;
-        this.database = new Database('./database/bible.db');
-        this.books = new BooksTable(this.database);
-        this.verses = new VersesTable(this.database);
-
-        this.books.createTable();
-        this.verses.createTable();
     }
     
     async getBooks(){
@@ -40,64 +41,51 @@ class Worker {
         });       
     }
 
-    getFileNameFromLink(link){
+    getLastElementFromLink(link){
         return link.substring(link.lastIndexOf('/') + 1);
     }
-    
-    async getTitle(url){
-        // Navigate to the page
-        let page = await this.browser.newPage();
-        console.log(`Scraping title from ${url}...`);
-        await page.goto(url);
 
-        // Get the chapter
-        const chapter = url.substring(url.lastIndexOf('/') + 1);
-
-        // Get the book name
-        await page.waitForSelector('.title-page');
-        const book = await page.evaluate(() => {
-            return document.querySelector('.title-page').textContent.trim();
-        });
-
-        return book;
+    removeElementFromLink(link){
+        return link.substring(0, link.lastIndexOf('/'));
     }
     
-    async getChapter(url){
+    async processChapter(url){
         // Navigate to the page
         let page = await this.browser.newPage();
         console.log(`Scraping contents from ${url}...`);
         await page.goto(url);
 
+        let work = new Work();
+
         // Get the chapter
-        const chapter = url.substring(url.lastIndexOf('/') + 1);
+        work.chapter = url.substring(url.lastIndexOf('/') + 1);
+
+        // Get chapter slug
+        work.slug = this.getLastElementFromLink(this.removeElementFromLink(url));
 
         // Get the book name
         await page.waitForSelector('.title-page');
-        const book = await page.evaluate(() => {
+        work.book = await page.evaluate(() => {
             return document.querySelector('.title-page').textContent.trim();
         });
 
         // Load the verses into an array of strings
         await page.waitForSelector('.contentarea');
-        const verses = await page.evaluate(() => {
+        work.verses = await page.evaluate(() => {
             const elements = document.querySelectorAll('.txt');                     
-            list = ['']
+            list = []
             for(element of elements){
+                let verse = '';
                 for(child of element.childNodes){
                     // Hack to get rid of all the subscripts but keep the L<small>ORD</small>
                     if((!child.firstChild || child.outerText == 'ORD') && child.textContent.trim().length > 0){
-                        list.push(child.textContent.trim());
+                        verse += child.textContent.trim() + ' ';
                     }                       
                 }
+                list.push(verse.trim());
             }
-            return list;
+            return list.map(verse => verse.replace(/L ORD/g, 'LORD'));
         });
-
-        // Create the chapter as a string from the verses
-        let text = verses.join(' ').trim();
-
-        // Respect the name -- this is caused by the L<small>ORD</small> convention of site
-        text = text.replace(/L ORD/g, 'LORD');
 
         // Wait for the link to the next chapter
         await page.waitForSelector('.pager__item.pager__item--next');
@@ -116,74 +104,14 @@ class Worker {
 
         // Decide whether this is the end the chapter based on whether a link is shown
         const endOfChapter = links.length == 0;  
-
-        const result = {
-            url:  endOfChapter ? null : links[0],
-            book: book,
-            chapter: chapter,
-            text: text,
-        };
+        work.url = endOfChapter ? null : links[0];        
 
         // Close the page
         page.close();
         
         // If this is the end of a chapter, return a null url. 
         // This will let the controller know to go to the next book.
-        return result;
-    }
-
-    startNextBook(title){
-        return bookTemplate.newDocument(title);
-    }
-
-    buildBook(currentDocument, additions){
-        if(parseInt(additions.chapter) == 1)
-            currentDocument += bookTemplate.book(additions.book);
-        
-        currentDocument += bookTemplate.chapter(additions.chapter);
-        currentDocument += bookTemplate.text(additions.text)
-        
-        if(additions.url)
-            currentDocument += bookTemplate.separator();
-        else{
-            currentDocument += bookTemplate.footer();
-        }
-
-        return currentDocument;
-    }
-
-    async saveAsHTML(title, html){
-        try{
-            path = './output/generated';
-            await mkdirp(path);
-            await fs.writeFile(`${path}/${title}.html`, html, err => {
-                if (err) {
-                    console.error(err);    
-                    return false;               
-                }
-                console.log(`Successfully created ${title}.html`);              
-            });
-
-            return true;
-        }
-        catch{
-            return false;
-        }
-    }
-
-    async buildTableOfContents(links){
-        console.log('Building table of contents...');
-        let html = contentsTemplate.newDocument();
-
-        for(let i=1; i<links.length; i++){
-            let slug = this.getFileNameFromLink(links[i]);
-            let url = `./${slug}.html`;
-            let title = await this.getTitle(`${links[i]}/1`);
-            if(links[i].indexOf('preface') == -1)
-                html += contentsTemplate.book(title, url);
-        }
-        html += contentsTemplate.footer();
-        return html;
+        return work;
     }
 
     close(){

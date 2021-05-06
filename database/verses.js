@@ -30,9 +30,16 @@ class VersesTable {
 
     delete(book, chapter, verse){
         return this.database.run(
-            `DELETE verses WHERE book = ? AND chapter = ? AND verse = ?`,
+            `DELETE FROM verses WHERE book = ? AND chapter = ? AND verse = ?`,
             [book, chapter, verse])
     }
+
+    clearTable(){
+      return this.database.run(
+          `DELETE FROM verses`,
+          []
+      )
+  }
   }
   
   module.exports = VersesTable;
