@@ -1,5 +1,4 @@
 const sqlite3 = require('sqlite3')
-// const Promise = require('bluebird')
 
 class Database {
   // omitting constructor code
