@@ -36,7 +36,7 @@ const TableOfContents = () => {
         <ul>
             {books.map((book) => (
                 <li key={book.number}>
-                    <Link href={`/${book.name} 1`}>
+                    <Link href={`/${book.name}+1`}>
                     <a>{book.name}</a>
                     </Link>
                 </li>

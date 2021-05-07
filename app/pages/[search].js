@@ -11,19 +11,15 @@ function SearchResults() {
     let chapter;
 
     if(search){
-        if(search.trim().includes(' ')){
-            let tokens = search.split(' ');
-            book = tokens.slice(0, tokens.length - 1).join(' ');
-            chapter = tokens[tokens.length - 1];
-            
-            if(isNaN(chapter)){
-                book += ' ' + chapter;
-                chapter = undefined;
-            }
+        let tokens = search.split('+');
+        book = tokens[0];
+        chapter = tokens[tokens.length - 1];
+        
+        if(isNaN(chapter)){
+            book += ' ' + chapter;
+            chapter = undefined;
         }
-        else{
-            book = search;
-        }
+        
     }
 
     return (
