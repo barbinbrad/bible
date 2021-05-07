@@ -17,7 +17,7 @@ npm start
 The html output will be saved to the output/generated folder.
 
 ## Testing
-In order to execute the tests, you just need to execute the following command:
+In order to execute the tests, execute the following command:
 ```
 npm test
 ```

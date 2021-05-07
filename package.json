@@ -4,7 +4,7 @@
   "description": "a puppeteer-based web scraper for the catholic bible",
   "main": "index.js",
   "scripts": {
-    "start": "node scraper/index.js",
+    "scrape": "node scraper/index.js",
     "test": "mocha --recursive test --timeout 10000"
   },
   "author": "Brad Barbin",
