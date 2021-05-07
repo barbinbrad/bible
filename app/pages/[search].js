@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-
+import Chapter from '../components/chapter'
  
 
-function Search() {
+function SearchResults() {
     const router = useRouter()
     const { search } = router.query
     
@@ -28,14 +28,10 @@ function Search() {
 
     return (
       <div>
-        <p>Book: {book}</p>
-        <p>Chapter: {chapter}</p>
-        <Link href="/">
-          <a>Next</a>
-        </Link>
+        <Chapter book={book} chapter={chapter}></Chapter>
       </div>
     )
   }
   
 
-export default Search
+export default SearchResults

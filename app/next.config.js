@@ -1,7 +1,7 @@
 
 
 module.exports = {
-    assetPrefix: './',
+    assetPrefix: '/',
 
     exportPathMap: async function() {
         const paths = {

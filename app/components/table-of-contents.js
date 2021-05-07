@@ -10,8 +10,7 @@ const TableOfContents = () => {
     useEffect(() => {
         async function initialize(){
             await store.ready;
-            
-            const db = store.db;
+
             const worker = store.worker;
             
             const results = await worker.db.query(`SELECT * FROM books`);
@@ -29,7 +28,7 @@ const TableOfContents = () => {
 
     if(books == null){
         return(
-            <Link href={`./read/Genesis 1`}>Genesis</Link>
+            <span></span>
         ) 
     }
 
@@ -37,7 +36,7 @@ const TableOfContents = () => {
         <ul>
             {books.map((book) => (
                 <li key={book.number}>
-                    <Link href={`./read/${book.name} 1`}>
+                    <Link href={`/${book.name} 1`}>
                     <a>{book.name}</a>
                     </Link>
                 </li>

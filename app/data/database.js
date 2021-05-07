@@ -21,9 +21,9 @@ export class Store {
         }
     }
     async init() {
-        const workerUrl = "./sqlite.worker.js"; // had to stuff these in the public folder
-        const wasmUrl = "./sql-wasm.wasm";
-        const dbUrl = './bible.db';
+        const workerUrl = "/sqlite.worker.js"; // had to stuff these in the public folder
+        const wasmUrl = "/sql-wasm.wasm";
+        const dbUrl = '/bible.db';
 
         const config = {
             from: "inline",
