@@ -1,9 +1,7 @@
-import {getStore} from '../data/database'
 
-const store = getStore();
 
 module.exports = {
-    assetPrefix: './'
+    assetPrefix: './',
 
     exportPathMap: async function() {
         const paths = {
