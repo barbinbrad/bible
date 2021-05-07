@@ -7,6 +7,7 @@ class VersesTable {
       const sql = `
       CREATE TABLE IF NOT EXISTS verses (
         book TEXT NOT NULL,
+        slug TEXT NOT NULL,
         chapter INTEGER NOT NULL,
         verse INTEGER NOT NULL,
         text TEXT NOT NULL,
@@ -15,11 +16,11 @@ class VersesTable {
       return this.database.run(sql)
     }
 
-    create(book, chapter, verse, text) {
+    create(book, slug, chapter, verse, text) {
         return this.database.run(
-          `INSERT INTO verses (book, chapter, verse, text)
-            VALUES (?, ?, ?, ?)`,
-          [book, chapter, verse, text])
+          `INSERT INTO verses (book, slug, chapter, verse, text)
+            VALUES (?, ?, ?, ?, ?)`,
+          [book, slug, chapter, verse, text])
     }
 
     update(book, chapter, verse, text) {

@@ -41,7 +41,7 @@ async function manage(browserPromise){
                 if(result.chapter == 1 && !debug){
                     // Insert the book into the database
                     number++;
-                    booksTable.create(number, result.slug, result.book);
+                    booksTable.create(number, result.book, result.slug);
                 }               
 
                 if(debug){
@@ -52,11 +52,11 @@ async function manage(browserPromise){
                     let next = worker.getBookFromLink(result.next)
                     
                     // Insert the chapter into the database
-                    chaptersTable.create(result.slug, result.chapter, next, prev)
+                    chaptersTable.create(result.book, result.chapter, next, prev)
                     
                     // Insert each verse into the database
                     for(let v=0; v<result.verses.length; v++){
-                        versesTable.create(result.slug, result.chapter, v+1, result.verses[v]);
+                        versesTable.create(result.book, result.slug, result.chapter, v+1, result.verses[v]);
                     }  
                 }
                                         
