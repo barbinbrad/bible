@@ -1,5 +1,3 @@
-const {bookTemplate, contentsTemplate} = require('./output');
-
 class Work {
     constructor(){
         this.book = '';

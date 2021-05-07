@@ -1,25 +1,23 @@
 # King James
+A minimal, statically-hosted bible, powered by a SQLite database, populated by a web-scraper.
 
-A puppeteer-based web scraper for the catholic bible that generates html pages without verse numbers or subscripts. 
+## Downloading the Site
+The whole site can be downloaded (and put on a flash drive).
 
-## Requirements
-You need to have [Node.js](https://nodejs.org/en/) and [Chrome](https://www.google.es/chrome/index.html) browser installed. Once you have them, in order to install the tests, just follow the next steps:
+## Recreating the Site
+To run the scraper and generate the site, you need [Node.js](https://nodejs.org/en/) and [Chrome](https://www.google.es/chrome/index.html) installed. Once you have them:
 ```
 git clone https://code.bradbarb.in/brad/king-james.git
 cd king-james
 npm install
 ```
-## Running
-In order to run the web scraper, execute the following command:
-```
-npm start
-```
-The html output will be saved to the output/generated folder.
 
-## Testing
-In order to execute the tests, execute the following command:
-```
-npm test
-```
+### Running the Scraper
+- In order to run the web scraper run `npm start`.\
+- Before you run the scraper, it's useful to run `npm test`
+- The scraping is saved to `./app/public/bible.db`
 
-
+### Building the Site
+- `cd app`
+- `npm run build`
+- The static site is published to `./app/out/`

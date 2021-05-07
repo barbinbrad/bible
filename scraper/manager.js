@@ -6,7 +6,7 @@ const VersesTable = require('../database/verses');
 
 let debug = false;
 
-const db = debug ? undefined : new Database('./output/bible.db');
+const db = debug ? undefined : new Database('./app/public/bible.db');
 const booksTable = debug ? undefined : new BooksTable(db);
 const chaptersTable = debug ? undefined : new ChaptersTable(db);
 const versesTable = debug ? undefined : new VersesTable(db);
