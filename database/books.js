@@ -7,14 +7,15 @@ class BooksTable {
       const sql = `
       CREATE TABLE IF NOT EXISTS books (
         name TEXT PRIMARY KEY NOT NULL,
+        number INTEGER NOT NULL,
         display TEXT NOT NULL)`
       return this.database.run(sql);
     }
 
-    create(name, display) {
+    create(number, name, display) {
         return this.database.run(
-            'INSERT INTO books (name, display) VALUES (?, ?)',
-            [name, display]);
+            'INSERT INTO books (number, name, display) VALUES (?, ?, ?)',
+            [number, name, display]);
     }
 
     update(name, display) {

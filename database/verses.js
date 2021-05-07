@@ -11,7 +11,7 @@ class VersesTable {
         verse INTEGER NOT NULL,
         text TEXT NOT NULL,
         PRIMARY KEY(book, chapter, verse),
-        FOREIGN KEY(book) REFERENCES books(id))`
+        FOREIGN KEY(book) REFERENCES books(name))`
       return this.database.run(sql)
     }
 
