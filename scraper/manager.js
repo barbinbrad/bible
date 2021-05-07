@@ -6,25 +6,27 @@ const VersesTable = require('../database/verses');
 
 let debug = false;
 
-async function manage(browserPromise){
-    const browser = await browserPromise;
-    const worker = new Worker(browser);
-    const db = debug ? undefined : new Database('./output/bible.db');
-    const booksTable = debug ? undefined : new BooksTable(db);
-    const chaptersTable = debug ? undefined : new ChaptersTable(db);
-    const versesTable = debug ? undefined : new VersesTable(db);
+const db = debug ? undefined : new Database('./output/bible.db');
+const booksTable = debug ? undefined : new BooksTable(db);
+const chaptersTable = debug ? undefined : new ChaptersTable(db);
+const versesTable = debug ? undefined : new VersesTable(db);
+
+async function manage(chromePromise){
+    const chrome = await chromePromise;
+    const worker = new Worker(chrome);
+    
 
     if(!debug){
         booksTable.createTable();
         chaptersTable.createTable();
         versesTable.createTable();
-        
+
+        // Clear database, start from scratch 
         booksTable.clearTable(); 
         chaptersTable.clearTable();       
         versesTable.clearTable();
     }
     
-
     try{      
         let pageToScrape = 'https://www.biblegateway.com/passage/?search=Genesis 1&version=NRSVCE';
         let previous = null;
@@ -33,14 +35,15 @@ async function manage(browserPromise){
 
         while(scraping){            
             if(pageToScrape != null){
-                // Scrape the next chapter link from the page
+                
                 result = await worker.processChapter(pageToScrape, previous);
                 previous = pageToScrape;
                 pageToScrape = result.next;
 
                 if(result.chapter == 1 && !debug){
+                    // TODO: figure out a cleaner way to do this:
+                    number++; 
                     // Insert the book into the database
-                    number++;
                     booksTable.create(number, result.book, result.slug);
                 }               
 
@@ -74,7 +77,7 @@ async function manage(browserPromise){
         if(worker){
             worker.close();
         }
-        console.log("Could not resolve the browser instance => ", err);
+        console.log("Could not resolve the chrome instance => ", err);
     }
 }
 
