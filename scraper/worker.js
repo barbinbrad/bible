@@ -74,26 +74,30 @@ class Worker {
             }
             return verses;
         });
+        try{
+            // Wait for the link to the next chapter
+            await page.waitForSelector('.next-chapter');
 
-        // Wait for the link to the next chapter
-        await page.waitForSelector('.next-chapter');
-
-        // Load the url from the link to the next chapter into an array of strings
-        const links = await page.evaluate(() => {
-            const elements = document.querySelectorAll('.next-chapter')
-            list = [];
-            for(element of elements){
-                if(element.href){
-                    list.push(element.href);
+            // Load the url from the link to the next chapter into an array of strings
+            const links = await page.evaluate(() => {
+                const elements = document.querySelectorAll('.next-chapter')
+                list = [];
+                for(element of elements){
+                    if(element.href){
+                        list.push(element.href);
+                    }
                 }
-            }
-            return list;
-        });
+                return list;
+            });
 
-        // Decide whether this is the end the chapter based on whether a link is shown
-        const endOfBible = links.length == 0;  
-        work.next = endOfBible ? null : `${decodeURIComponent(links[0])}`;             
-
+            // Decide whether this is the end the chapter based on whether a link is shown
+            const endOfBible = links.length == 0;  
+            work.next = endOfBible ? null : `${decodeURIComponent(links[0])}`;             
+        }
+        catch{
+            work.next = null;
+        }
+        
         // Close the page
         page.close();
         
