@@ -5,7 +5,7 @@ const Database = require('../database/database');
 const VersesTable = require('../database/verses');
 
 (async function() { 
-    var start = new Date().getTime();
+    const start = new Date().getTime();
 
     const chapters = require('../output/chapters.json');
     const db = new Database(config.databaseLocation);
@@ -58,8 +58,8 @@ const VersesTable = require('../database/verses');
             
     }
 
-    var end = new Date().getTime();
-    var time = end - start;
+    const end = new Date().getTime();
+    const time = end - start;
 
     console.log(`Build took ${time}ms`);
 })();
