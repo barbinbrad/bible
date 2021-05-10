@@ -28,6 +28,19 @@ class ChaptersTable {
         )
     }
 
+    get(name, number){
+      return this.database.get(
+        `SELECT * FROM chapters WHERE name = ? AND number = ?`,
+        [name, number]
+      )
+    }
+
+    getAll(){
+      return this.database.all(
+        `SELECT chapters.name, chapters.number, chapters.next, chapters.previous FROM chapters INNER JOIN books ON books.name = chapters.name ORDER BY books.number, chapters.number`
+      )
+    }
+
     delete(name, number){
         return this.database.run(
             `DELETE FROM chapters WHERE name = ? AND number = ?`,

@@ -1,0 +1,95 @@
+@import 'https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap';
+body {
+    margin: 0 auto;
+    max-width: 40em;
+    font-family: lora, Arial, Helvetica, sans-serif;
+    padding:0 2em
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 6em;
+    font-weight: 700;
+    color: #2d2d2d;
+    letter-spacing:-.04em
+}
+
+ul {
+    margin: 0 auto;
+    padding: 0;
+    text-align:center
+}
+
+li {
+    margin: 0;
+    padding: 10px 0;
+    list-style:none
+}
+
+li a {
+    font-size: 2em;
+    text-decoration: none;
+    color: #333;
+    padding:10px
+}
+
+li a:hover {
+    background-color:#ffa
+}
+
+h2 {
+    text-align: center;
+    font-size: 4em;
+    font-weight: 700;
+    color: #2d2d2d;
+    letter-spacing: -.04em;
+    margin:2em 0
+}
+
+h3 {
+    color: #aaa;
+    font-size:1.5em
+}
+
+p {
+    font-size: 1.2em;
+    color: #333;
+    line-height:1.75
+}
+
+hr {
+    margin: 5em 0;
+    border: 0;
+    height: 1px;
+    background-image:linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0))
+}
+
+footer {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 5em 0;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#aaa
+}
+
+footer a {
+    color:#888
+}
+
+@media only screen and (max-width: 720px) {
+    body {
+        padding:0 1em
+    }
+
+    h1 {
+        font-size:3.5em
+    }
+
+    h2 {
+        font-size: 2em
+    }
+}
+

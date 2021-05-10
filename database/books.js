@@ -24,6 +24,12 @@ class BooksTable {
         [display, name]);
     }
 
+    getAll(){
+      return this.database.all(
+        `SELECT * FROM books ORDER BY number`
+      )
+    }
+
     delete(name){
         return this.database.run(
             `DELETE FROM books WHERE name = ?`,

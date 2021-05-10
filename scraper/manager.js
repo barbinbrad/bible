@@ -1,3 +1,4 @@
+const config = require('../config');
 const Worker = require('./worker');
 const Database = require('../database/database');
 const BooksTable = require('../database/books');
@@ -6,7 +7,7 @@ const VersesTable = require('../database/verses');
 
 let debug = false;
 
-const db = debug ? undefined : new Database('./app/public/bible.db');
+const db = debug ? undefined : new Database(config.databaseLocation);
 const booksTable = debug ? undefined : new BooksTable(db);
 const chaptersTable = debug ? undefined : new ChaptersTable(db);
 const versesTable = debug ? undefined : new VersesTable(db);
@@ -44,7 +45,9 @@ async function manage(chromePromise){
                     // TODO: figure out a cleaner way to do this:
                     number++; 
                     // Insert the book into the database
-                    booksTable.create(number, result.book, result.slug);
+                    if(result.book.length > 0){
+                        booksTable.create(number, result.book, result.slug);
+                    }
                 }               
 
                 if(debug){
@@ -59,7 +62,9 @@ async function manage(chromePromise){
                     
                     // Insert each verse into the database
                     for(let v=0; v<result.verses.length; v++){
-                        versesTable.create(result.book, result.slug, result.chapter, v+1, result.verses[v]);
+                        if(result.book.length > 0){
+                            versesTable.create(result.book, result.slug, result.chapter, v+1, result.verses[v]);
+                        }
                     }  
                 }
                                         

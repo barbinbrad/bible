@@ -29,6 +29,13 @@ class VersesTable {
             [text, book, chapter, verse])
     }
 
+    getAll(book, chapter){
+        return this.database.all(
+          `SELECT * FROM verses WHERE book = ? AND chapter = ?`,
+          [book, chapter]
+        )
+    }
+
     delete(book, chapter, verse){
         return this.database.run(
             `DELETE FROM verses WHERE book = ? AND chapter = ? AND verse = ?`,
