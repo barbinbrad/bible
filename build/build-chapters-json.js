@@ -5,15 +5,25 @@ const Database = require('../database/database');
 const ChaptersTable = require('../database/chapters');
 
 (async function() { 
+    console.log('Building chapters.json...');
+    const start = new Date().getTime();
+
     const db = new Database(config.databaseLocation);
     const chaptersTable = new ChaptersTable(db);
+
     const results = await chaptersTable.getAll();
     results.forEach(result => {
         result.link = utils.addPlusSignToNormalLink(result.name + ' ' + result.number);
     });
 
-    fs.writeFile('./output/chapters.json', JSON.stringify(results), (err) => {
-        if (err) throw err;
-        console.log('Chapters written to file');
-    });
+    const folder = './output/read';
+    const file = `${folder}/chapters.json`
+
+    fs.mkdirSync(folder, {recursive: true});
+    fs.writeFileSync(file, JSON.stringify(results));
+
+    const end = new Date().getTime();
+    const time = end - start;
+
+    console.log(`Build took ${time}ms`);
 })();

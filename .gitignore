@@ -118,3 +118,6 @@ dist
 
 # Cache
 cache/
+
+# Output
+output/read/
