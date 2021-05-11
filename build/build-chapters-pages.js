@@ -20,11 +20,12 @@ const VersesTable = require('../database/verses');
         }
 
         let html = '<!DOCTYPE HTML>';
-        html += '<html lang="en">';
+        html += '<html lang="en" class="no-js">';
         html += '<head>';
         html +=     '<meta charset="UTF-8">';
         html +=     `<title>${chapter.name} ${chapter.number}</title>`;
         html +=     '<meta name="viewport" content="width=device-width">';
+        html +=     `<meta name="description" content="${chapter.name} Chapter ${chapter.number}">`;
         html +=     '<link rel="stylesheet" href="../../assets/css/styles.css">';
         html +=     '<link rel="stylesheet" href="../../assets/css/print.css" media="print">';
         html +=     '<meta name="theme-color" content="#FFFFFF"></meta>';        
@@ -37,7 +38,7 @@ const VersesTable = require('../database/verses');
         html +=                     '<path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>';
         html +=                 '</svg>';
         html +=             '</div>';
-        html +=             '<autocomplete v-bind:min-input="1"></autocomplete>';
+        html +=             '<autocomplete></autocomplete>';
         html +=         '</div>';
         html +=     '</div>';
         html +=     '<div id="content">';
