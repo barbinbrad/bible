@@ -1,4 +1,5 @@
 let chapters;
+let books;
 
 fetch('../../read/chapters.json').then(
     function(data){ return data.json();}
@@ -7,16 +8,20 @@ fetch('../../read/chapters.json').then(
         chapters = json;
     }
 );
-const chapterSearch = function(q){
-  return chapters.map(function(chapter){
-      return {
-          name: chapter.name + ' ' + chapter.number,
-          link: chapter.link
-      }
-  }).filter(function(chapter){
-      return chapter.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
-  }).map(function(chapter) {
-    return chapter['name'];
+
+fetch('../../read/books.json').then(
+  function(data){ return data.json();}
+).then(
+  function(json){
+      books = json;
+  }
+);
+
+const bookSearch = function(q){
+  return books.filter(function(book){
+      return book.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
+  }).map(function(book) {
+    return book['name'];
   });
 };
 
@@ -24,30 +29,31 @@ const chapterLink = function(description){
     let tokens = description.split(' ');
     let chapter = tokens.pop();
     let book = tokens.join(' ');
-    return `${book}+${chapter}`;
+    return `${book}+1`;
 }
 
 const state = {
   autocompleteList : [],
+  chapterList: [],
   inputData : '',
   focusIndex : '',
   inputFocus : false
 };
 
 const mutations = {
-  UPDATE_LIST(state, newList){
+  UPDATE_AUTOCOMPLETE_LIST(state, newList){
     state.autocompleteList = newList
   },
-  RESET_LIST(state){
+  RESET_AUTOCOMPLETE(state){
     state.autocompleteList = []
   },
-  UPDATE_INPUT(state, text){
+  UPDATE_AUTOCOMPLETE_INPUT(state, text){
     state.inputData = text;
   },
-  SET_FOCUS(state, val){
+  SET_AUTOCOMPLETE_FOCUS(state, val){
     state.focusIndex = val;
   },
-  INCREMENT_DECREMENT_FOCUS(state, val){
+  ADJUST_AUTOCOMPLETE_FOCUS(state, val){
     if(state.focusIndex === ''){
       state.focusIndex = 0
     }else{
@@ -60,41 +66,40 @@ const mutations = {
     }
 
   },
-  RESET_FOCUS(state){
+  RESET_AUTOCOMPLETE_FOCUS(state){
     state.focusIndex = ''
   },
-  CHANGE_INPUT_FOCUS(state,val){
+  UPDATE_AUTOCOMPLETE_FOCUS(state,val){
     state.inputFocus = val
   }
 
 };
 
 const actions = {
-  searchData({commit}, searchText){
-    //dummy pengganti http request
-    var searchResult = chapterSearch(searchText)  
-    commit('UPDATE_LIST', searchResult)
-    commit('INCREMENT_DECREMENT_FOCUS', 0)    
+  searchData({commit}, q){
+    var searchResult = bookSearch(q)  
+    commit('UPDATE_AUTOCOMPLETE_LIST', searchResult)
+    commit('ADJUST_AUTOCOMPLETE_FOCUS', 0)    
   },
   optionPicked({commit}, selectedText){;
-    commit('UPDATE_INPUT',selectedText)
-;    commit('RESET_LIST')
+    commit('UPDATE_AUTOCOMPLETE_INPUT',selectedText);    
+    commit('RESET_AUTOCOMPLETE')
     alert(chapterLink(selectedText));
   },
   resetData({commit}){
-    commit('RESET_LIST')
+    commit('RESET_AUTOCOMPLETE')
   },
   changeInput({commit},text){
-    commit('UPDATE_INPUT',text)
+    commit('UPDATE_AUTOCOMPLETE_INPUT',text)
   },
   focusChange({commit}, val){
-    commit('INCREMENT_DECREMENT_FOCUS',val)
+    commit('ADJUST_AUTOCOMPLETE_FOCUS',val)
   },
   setFocus({commit}, val){
-    commit('SET_FOCUS',val)
+    commit('SET_AUTOCOMPLETE_FOCUS',val)
   },
   inputFocus({commit}, val){
-    commit('CHANGE_INPUT_FOCUS',val)
+    commit('UPDATE_AUTOCOMPLETE_FOCUS',val)
   }
 };
 
@@ -108,7 +113,7 @@ Vue.component('autocomplete',{
 	template: '#autocomplete',
   created : function(){
   },
-  props : ['minInput','urlDataSource'],
+  props : ['minInput'],
   computed : {
     autocompleteList () {
       if(this.isFocus){
@@ -149,20 +154,20 @@ Vue.component('autocomplete',{
         return;
       switch (keycode) {
           case 40: 
-          this.$store.dispatch('focusChange',1);
-          break;
+            this.$store.dispatch('focusChange',1);
+            break;
           case 38: 
-          this.$store.dispatch('focusChange',-1);
-          break;
+            this.$store.dispatch('focusChange',-1);
+            break;
           case 13: 
-          this.$store.dispatch('optionPicked', this.autocompleteList[this.$store.state.focusIndex]);
-          e.target.blur();
-          //this.$store.dispatch('inputFocus',false);
-          break;
+            this.$store.dispatch('optionPicked', this.autocompleteList[this.$store.state.focusIndex]);
+            e.target.blur();
+            //this.$store.dispatch('inputFocus',false);
+            break;
           case 27: 
-          e.target.blur();
-          this.$store.dispatch('resetData');
-          break;
+            e.target.blur();
+            this.$store.dispatch('resetData');
+            break;
         }
     },
     inputFocus : function(val){
@@ -172,8 +177,7 @@ Vue.component('autocomplete',{
 
 });
 
-// end autocomplete component
-// data list component
+
 Vue.component('list',{
 	template: '#results-list',
   created : function(){
