@@ -37,7 +37,7 @@ const VersesTable = require('../database/verses');
         html +=                     '<path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>';
         html +=                 '</svg>';
         html +=             '</div>';
-        html +=             '<autocomplete v-bind:min-input="1" url-data-source="isi url ajax di sini"></autocomplete>';
+        html +=             '<autocomplete v-bind:min-input="1"></autocomplete>';
         html +=         '</div>';
         html +=     '</div>';
         html +=     '<div id="content">';
@@ -62,7 +62,7 @@ const VersesTable = require('../database/verses');
 
         html += '<script type="text/x-template" id="autocomplete">';
         html +=     '<div>';
-        html +=         '<input type="text" placeholder="Search" id="acinput" name="acinput" @keyup="fetchData()" @keydown="setFocus" @focus="inputFocus(true)" @blur="inputFocus(false)" v-model="inputtext" class="form-control"/>';
+        html +=         '<input type="text" placeholder="Books" id="acinput" name="acinput" @keyup="fetchData()" @keydown="setFocus" @focus="inputFocus(true)" @blur="inputFocus(false)" v-model="inputtext" class="form-control"/>';
         html +=         '<list :fetchedData="autocompleteList"></list>'  
         html +=     '</div>';
         html += '</script>';
@@ -78,7 +78,8 @@ const VersesTable = require('../database/verses');
         html += '</script>';
 
         html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.2/vue.js"></script>';
-        html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.0.0/vuex.js"><script>';
+        html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.0.0/vuex.js"></script>';
+        html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>';
         html += '<script src="../../assets/js/scripts.js"></script>'
         html += '</body>'
         html += '</html>';

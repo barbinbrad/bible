@@ -27,7 +27,7 @@ body{
   align-items: center;
   display: flex;
   position: absolute;
-  top: 10px;
+  top: 7px;
   left:0;
 }
 
@@ -36,11 +36,10 @@ body{
   width: 1.5rem;
   height: 1.5rem;
   display: block;
-  vertical-align: middle; 
 }
 
 #search .input input{
-  font-size: 1.25rem;
+  font-size: 0.875rem;
   font-weight: 300;
   color: #444;
   -webkit-font-smoothing: antialiased;
@@ -51,13 +50,14 @@ body{
   border: 1px solid rgb(209,213,219);
   border-radius: .375rem;
   outline: none;
+  width: 100%;
 }
 
 #search .results{
   position: absolute;
   background: #fff;
   width: 100%;
-  max-width: 20rem;
+  max-width: 14rem;
 }
 
 #search .results .list-group{
