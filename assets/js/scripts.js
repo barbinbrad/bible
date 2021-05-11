@@ -1,3 +1,6 @@
+document.documentElement.classList.remove('no-js');
+document.documentElement.classList.add('js');
+
 let chapters;
 let books;
 
@@ -25,12 +28,9 @@ const bookSearch = function(q){
   });
 };
 
-const chapterLink = function(description){
-    let tokens = description.split(' ');
-    let chapter = tokens.pop();
-    let book = tokens.join(' ');
-    return `${book}+1`;
-}
+const firstChapterLink = function(book){
+    return `../${book}+1`;
+};
 
 const state = {
   autocompleteList : [],
@@ -78,28 +78,28 @@ const mutations = {
 const actions = {
   searchData({commit}, q){
     var searchResult = bookSearch(q)  
-    commit('UPDATE_AUTOCOMPLETE_LIST', searchResult)
-    commit('ADJUST_AUTOCOMPLETE_FOCUS', 0)    
+    commit('UPDATE_AUTOCOMPLETE_LIST', searchResult);
+    commit('ADJUST_AUTOCOMPLETE_FOCUS', 0);    
   },
   optionPicked({commit}, selectedText){;
     commit('UPDATE_AUTOCOMPLETE_INPUT',selectedText);    
-    commit('RESET_AUTOCOMPLETE')
-    alert(chapterLink(selectedText));
+    commit('RESET_AUTOCOMPLETE');
+    window.location.href = firstChapterLink(selectedText);
   },
   resetData({commit}){
-    commit('RESET_AUTOCOMPLETE')
+    commit('RESET_AUTOCOMPLETE');
   },
   changeInput({commit},text){
-    commit('UPDATE_AUTOCOMPLETE_INPUT',text)
+    commit('UPDATE_AUTOCOMPLETE_INPUT',text);
   },
   focusChange({commit}, val){
-    commit('ADJUST_AUTOCOMPLETE_FOCUS',val)
+    commit('ADJUST_AUTOCOMPLETE_FOCUS',val);
   },
   setFocus({commit}, val){
-    commit('SET_AUTOCOMPLETE_FOCUS',val)
+    commit('SET_AUTOCOMPLETE_FOCUS',val);
   },
   inputFocus({commit}, val){
-    commit('UPDATE_AUTOCOMPLETE_FOCUS',val)
+    commit('UPDATE_AUTOCOMPLETE_FOCUS',val);
   }
 };
 
@@ -113,7 +113,9 @@ Vue.component('autocomplete',{
 	template: '#autocomplete',
   created : function(){
   },
-  props : ['minInput'],
+  data: function(){
+    return {}
+  },
   computed : {
     autocompleteList () {
       if(this.isFocus){
@@ -127,7 +129,7 @@ Vue.component('autocomplete',{
         return this.$store.state.inputData
       },
       set (value) {
-        this.$store.dispatch('changeInput', value)
+        this.$store.dispatch('changeInput', value);      
       }
     },
     isFocus () {
@@ -135,12 +137,9 @@ Vue.component('autocomplete',{
     }
 
   },
-	data: function(){
-    return {}
-	},
-  methods: {
+	methods: {
     fetchData: function(e){
-      if(this.inputtext.length>=this.minInput && this.isFocus){
+      if(this.inputtext.length>=1 && this.isFocus){
         this.$store.dispatch('searchData', this.inputtext)
       }else{
         this.$store.dispatch('resetData')
