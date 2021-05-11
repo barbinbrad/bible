@@ -30,8 +30,19 @@ const VersesTable = require('../database/verses');
         html +=     '<meta name="theme-color" content="#FFFFFF"></meta>';        
         html += '</head>';
         html += '<body>';
-        html +=     `<h2>${chapter.name} ${chapter.number}</h2>`
-        html +=     '<p>';
+        html +=     '<div id="search">';
+        html +=         '<div class="input">';
+        html +=             '<div class="icon">';
+        html +=                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">';
+        html +=                     '<path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>';
+        html +=                 '</svg>';
+        html +=             '</div>';
+        html +=             '<autocomplete v-bind:min-input="1" url-data-source="isi url ajax di sini"></autocomplete>';
+        html +=         '</div>';
+        html +=     '</div>';
+        html +=     '<div id="content">';
+        html +=         `<h2>${chapter.name} ${chapter.number}</h2>`
+        html +=         '<p>';
         
         const verses = await versesTable.getAll(chapter.name, chapter.number);
 
@@ -39,15 +50,36 @@ const VersesTable = require('../database/verses');
             html +=     `<span id="${verse.slug}-${verse.chapter}-${verse.verse}">${verse.text}&nbsp;</span>`;
         }
 
-        html +=     '</p>';
+        html +=         '</p>';
 
         if(chapter.previous){
-            html += `<a class="next" href="../${utils.addPlusSignToNormalLink(chapter.previous)}/">${utils.LeftArrow}</a>`;
+            html +=     `<a class="prev" href="../${utils.addPlusSignToNormalLink(chapter.previous)}/">${utils.LeftArrow}</a>`;
         }
         if(chapter.next){
-            html += `<a class="prev" href="../${utils.addPlusSignToNormalLink(chapter.next)}/">${utils.RightArrow}</a>` 
+            html +=     `<a class="next" href="../${utils.addPlusSignToNormalLink(chapter.next)}/">${utils.RightArrow}</a>` 
         }
-        
+        html +=     '</div>'
+
+        html += '<script type="text/x-template" id="autocomplete">';
+        html +=     '<div>';
+        html +=         '<input type="text" placeholder="Search" id="acinput" name="acinput" @keyup="fetchData()" @keydown="setFocus" @focus="inputFocus(true)" @blur="inputFocus(false)" v-model="inputtext" class="form-control"/>';
+        html +=         '<list :fetchedData="autocompleteList"></list>'  
+        html +=     '</div>';
+        html += '</script>';
+
+        html += '<script type="text/x-template" id="results-list">';
+        html +=     '<div class="results">';
+        html +=         '<div class="autolist" v-if="fetchedData.length>0">';
+        html +=             '<ul class="list-group">';
+        html +=                 '<li class="list-group-item" :class="checkSelected(index)" v-for="(dt, index) in fetchedData" @mousemove="mouseHover(index)" @mousedown="selectMe(index)">{{dt}}</li>';
+        html +=             '</ul>';
+        html +=         '</div>';
+        html +=     '</div>';
+        html += '</script>';
+
+        html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.2/vue.js"></script>';
+        html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.0.0/vuex.js"><script>';
+        html += '<script src="../../assets/js/scripts.js"></script>'
         html += '</body>'
         html += '</html>';
         
