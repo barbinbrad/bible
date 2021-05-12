@@ -3,6 +3,8 @@ document.documentElement.classList.add('js');
 
 
 const search = function(state, q){
+  // If the query could be for more than one book, return the books
+  // Otherwise, return the chapters
   let result = state.books.filter(function(book){
     return book.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
   }).map(function(book) {
@@ -10,29 +12,24 @@ const search = function(state, q){
   });
 
   if(result && result.length <= 1){
-    console.log('looking at chapters');
     return state.chapters.filter(function(chapter){
       return `${chapter.name} ${chapter.number}`.toLowerCase().indexOf(q.toLowerCase()) > -1;
     }).map(function(chapter) {
       return chapter.name + ' ' + chapter.number;
     });
-  } else{
-    console.log('looking at books');
+  } 
+  else{
     return result;
   }
 };
 
-const link = function(linkDescription){
-    let tokens = linkDescription.split(' ');
+const link = function(input){
+    // Genesis 2 -> Genesis+2
+    // Genesis -> Genesis+1
+    // 1 Kings -> 1 Kings+1
+    let tokens = input.split(' ');
     let lastToken = tokens.pop();
-
-    if(isNaN(lastToken)){
-      return `../${linkDescription}+1/`;
-    }
-    else{
-      return `../${tokens.join(' ')}+${lastToken}/`
-    }
-     
+    return (isNaN(lastToken)) ? `../${linkDescription}+1/` : `../${tokens.join(' ')}+${lastToken}/`;  
 };
 
 const state = {
@@ -71,7 +68,8 @@ const mutations = {
     console.log('ADJUST_AUTOCOMPLETE_FOCUS', state.autocompleteIndex);
     if(state.autocompleteIndex === ''){
       state.autocompleteIndex = 0;
-    }else{
+    }
+    else{
       state.autocompleteIndex += val
       if(state.autocompleteIndex<0){
         state.autocompleteIndex = 0;
@@ -158,7 +156,8 @@ Vue.component('autocomplete',{
     autocompleteList () {
       if(this.isFocus){
         return this.$store.state.autocompleteList        
-      }else{
+      }
+      else{
         return []
       }
     },
@@ -179,7 +178,8 @@ Vue.component('autocomplete',{
     fetchData: function(e){
       if(this.inputtext.length>=1 && this.isFocus){
         this.$store.dispatch('searchData', this.inputtext)
-      }else{
+      }
+      else{
         this.$store.dispatch('resetData')
       }
     },
@@ -199,7 +199,6 @@ Vue.component('autocomplete',{
           case 13: 
             this.$store.dispatch('optionPicked', this.autocompleteList[this.$store.state.autocompleteIndex]);
             e.target.blur();
-            //this.$store.dispatch('inputFocus',false);
             break;
           case 27: 
             e.target.blur();
@@ -274,7 +273,8 @@ Vue.component('chapter-slideout', {
     toggle() {
       if (this.isOpen) {
         this.close();
-      } else {
+      } 
+      else {
         this.open();
       }
     }
@@ -288,9 +288,13 @@ new Vue({
 
 
 /* 
-  Service Worker 
-  Note: This ought to be the last thing loaded  
-*/
+  --------------------------------------------
+  Service Worker
+  -------------------------------------------- 
+  
+  Note: This ought to be the last thing called  
+ 
+ */
 
 if('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js', { scope: '/' })

@@ -13,9 +13,9 @@ npm install
 ```
 
 ### Running the Scraper
-- In order to run the web scraper run `npm run scrape`.\
+- In order to run the web scraper run `npm run scrape`.
 - Before you run the scraper, it's useful to run `npm test`
-- The scraping is saved to `./output/bible.db`
+- The scraping is saved to `./database/bible.db`
 
 ### Building the Site
 - `npm run build`
