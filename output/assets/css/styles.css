@@ -90,7 +90,21 @@ body{
   position: absolute;
 }
 
-.zap-slideout-menu{
+.chapter-drawer-background{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    transform: translateX(-100%);
+    z-index: 999;
+}
+
+.chapter-drawer-menu{
+    list-style: none;
     position: fixed;
     left: 0;
     top: 0;
@@ -105,19 +119,53 @@ body{
     overflow: auto;
 }
 
-.zap-slideout-opener, .zap-slideout-closer{
+.chapter-drawer-opener, .chapter-drawer-closer{
   width: 2em;
   height: 2em;
-  color: #444;
   position: absolute;
   top: 14px;
-  left: 14px;
   cursor: pointer;
 }
 
+.chapter-drawer-opener{
+  color: #444;
+  left: 14px;
+  
+}
+.chapter-drawer-closer{
+  color: white;
+  left: 290px;
+  transform: translateX(-100%);
+  transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
 
-.zap-slideout.isOpen .zap-slideout-menu{
+.chapter-drawer.isOpen .chapter-drawer-background, 
+.chapter-drawer.isOpen .chapter-drawer-menu,
+.chapter-drawer.isOpen .chapter-drawer-closer{
   transform: translateX(0);
+}
+
+.chapter-drawer-menu-item {
+    margin: 0;
+    padding: 0;
+    list-style:none;
+    border-bottom: 1px solid #ddd;
+}
+
+.chapter-drawer-menu-item a {
+    font-size: 2em;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.875em;
+    text-decoration: none;
+    color: #333;
+    width: 100%;
+    padding: 10px 0;
+    display: block;
+}
+
+.no-js .chapter-drawer{
+    display: none;
 }
 
 #content {
@@ -177,22 +225,6 @@ ul {
     text-align:center
 }
 
-li {
-    margin: 0;
-    padding: 10px 0;
-    list-style:none
-}
-
-li a {
-    font-size: 2em;
-    text-decoration: none;
-    color: #333;
-    padding:10px
-}
-
-li a:hover {
-    background-color:#ffa
-}
 
 h2 {
     text-align: center;

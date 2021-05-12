@@ -1,5 +1,6 @@
 const fs = require('fs');
 const utils = require('./utils');
+const components = require('./components');
 const config = require('../config');
 const Database = require('../database/database');
 const VersesTable = require('../database/verses');
@@ -14,10 +15,6 @@ const VersesTable = require('../database/verses');
         
 
     for(chapter of chapters){      
-
-        if(chapter.name == 'Numbers'){
-            break;
-        }
 
         let html = '<!DOCTYPE HTML>';
         html += '<html lang="en" class="no-js">';
@@ -59,16 +56,16 @@ const VersesTable = require('../database/verses');
         html +=         '</p>';
 
         if(chapter.previous){
-            html +=     `<a class="prev" href="../${utils.addPlusSignToNormalLink(chapter.previous)}/">${utils.LeftArrow}</a>`;
+            html +=     `<a class="prev" href="../${utils.addPlusSignToNormalLink(chapter.previous)}/">${components.LeftArrow}</a>`;
         }
         if(chapter.next){
-            html +=     `<a class="next" href="../${utils.addPlusSignToNormalLink(chapter.next)}/">${utils.RightArrow}</a>` 
+            html +=     `<a class="next" href="../${utils.addPlusSignToNormalLink(chapter.next)}/">${components.RightArrow}</a>` 
         }
         html +=     '</div>'
 
-        html += utils.AutoComplete;    
-        html += utils.AutoCompleteResults;
-        html += utils.ChapterDrawer;
+        html += components.AutoComplete;    
+        html += components.AutoCompleteResults;
+        html += components.ChapterDrawer;
 
         html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.2/vue.js"></script>';
         html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.0.0/vuex.js"></script>';
