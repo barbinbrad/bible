@@ -92,16 +92,17 @@ body{
 
 .zap-slideout-menu{
     position: fixed;
-    right: 0;
+    left: 0;
     top: 0;
     bottom: 0;
     height: 100vh;
     width: 280px;
     background: white;
-    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
     z-index: 999;
-    transform: translateX(100%);
+    transform: translateX(-100%);
     transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+    overflow: auto;
 }
 
 .zap-slideout-opener, .zap-slideout-closer{
@@ -110,7 +111,7 @@ body{
   color: #444;
   position: absolute;
   top: 14px;
-  right: 14px;
+  left: 14px;
   cursor: pointer;
 }
 
