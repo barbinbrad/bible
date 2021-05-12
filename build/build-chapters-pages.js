@@ -23,6 +23,8 @@ const VersesTable = require('../database/verses');
         html +=     `<title>${chapter.name} ${chapter.number}</title>`;
         html +=     '<meta name="viewport" content="width=device-width">';
         html +=     `<meta name="description" content="${chapter.name} Chapter ${chapter.number}">`;
+        html +=     '<link rel="preconnect" href="https://fonts.gstatic.com">';
+        html +=     '<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,700&display=swap" rel="stylesheet">';
         html +=     '<link rel="stylesheet" href="../../assets/css/styles.css">';
         html +=     '<link rel="stylesheet" href="../../assets/css/print.css" media="print">';
         html +=     '<meta name="theme-color" content="#FFFFFF"></meta>';        

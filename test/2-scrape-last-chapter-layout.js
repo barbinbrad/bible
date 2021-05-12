@@ -10,7 +10,7 @@ describe('Bible Scraping Last Chapter Layout Test', () => {
     before(async () => { 
         chrome = await browser.startBrowser();
         page = await chrome.newPage();
-        await page.goto('https://www.biblegateway.com/passage/?search=Revelation 22&version=NRSVCE');
+        await page.goto('https://www.biblegateway.com/passage/?search=Revelation 22&version=ASV');
     });
 
     after(async () => { 
