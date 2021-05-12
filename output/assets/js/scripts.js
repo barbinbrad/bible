@@ -1,8 +1,9 @@
 document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
+const serviceWorkerVersion = '0.0.1';
 
-const search = function(state, q){
+const getAutocompleteResults = function(state, q){
   // If the query could be for more than one book, return the books
   // Otherwise, return the chapters
   let result = state.books.filter(function(book){
@@ -23,13 +24,13 @@ const search = function(state, q){
   }
 };
 
-const link = function(input){
+const getChapterLink = function(input){
     // Genesis 2 -> Genesis+2
     // Genesis -> Genesis+1
     // 1 Kings -> 1 Kings+1
     let tokens = input.split(' ');
     let lastToken = tokens.pop();
-    return (isNaN(lastToken)) ? `../${linkDescription}+1/` : `../${tokens.join(' ')}+${lastToken}/`;  
+    return (isNaN(lastToken)) ? `../${input}+1/` : `../${tokens.join(' ')}+${lastToken}/`;  
 };
 
 const state = {
@@ -49,23 +50,23 @@ const mutations = {
     state.chapters = payload;
   },
   UPDATE_AUTOCOMPLETE_LIST(state, newList){
-    console.log('UPDATE_AUTOCOMPLETE_LIST', state.autocompleteIndex);
+    
     state.autocompleteList = newList
   },
   RESET_AUTOCOMPLETE(state){
-    console.log('RESET_AUTOCOMPLETE', state.autocompleteIndex);
+    
     state.autocompleteList = []
   },
   UPDATE_AUTOCOMPLETE_INPUT(state, text){
-    console.log('UPDATE_AUTOCOMPLETE_INPUT', text);
+    
     state.autocompleteInput = text;
   },
   SET_AUTOCOMPLETE_FOCUS(state, val){
-    console.log('SET_AUTOCOMPLETE_FOCUS', state.autocompleteIndex);
+    
     state.autocompleteIndex = val;
   },
   ADJUST_AUTOCOMPLETE_FOCUS(state, val){
-    console.log('ADJUST_AUTOCOMPLETE_FOCUS', state.autocompleteIndex);
+    
     if(state.autocompleteIndex === ''){
       state.autocompleteIndex = 0;
     }
@@ -80,11 +81,11 @@ const mutations = {
     }
   },
   RESET_AUTOCOMPLETE_FOCUS(state){
-    console.log('RESET_AUTOCOMPLETE_FOCUS');
+    
     state.autocompleteIndex = ''
   },
   UPDATE_AUTOCOMPLETE_FOCUS(state,val){
-    console.log('UPDATE_AUTOCOMPLETE_FOCUS');
+    
     state.inputFocus = val
   }
 };
@@ -111,14 +112,17 @@ const actions = {
     );
   },
   searchData({commit, state}, q){
-    var searchResult = search(state, q);
+    var searchResult = getAutocompleteResults(state, q);
     commit('UPDATE_AUTOCOMPLETE_LIST', searchResult);
     commit('ADJUST_AUTOCOMPLETE_FOCUS', 0);    
   },
-  optionPicked({commit}, selectedText){;
+  optionPicked({commit}, selectedText){
+    
     commit('UPDATE_AUTOCOMPLETE_INPUT',selectedText);    
     commit('RESET_AUTOCOMPLETE');
-    window.location.href = link(selectedText);
+    window.location.href = getChapterLink(selectedText);
+    
+
   },
   resetData({commit}){
     commit('RESET_AUTOCOMPLETE');
@@ -127,7 +131,7 @@ const actions = {
     commit('UPDATE_AUTOCOMPLETE_INPUT',text);
   },
   focusChange({commit}, val){
-    console.log('focusChange', val)
+    
     commit('ADJUST_AUTOCOMPLETE_FOCUS',val);
   },
   setFocus({commit}, val){
@@ -221,7 +225,7 @@ Vue.component('list',{
   props : ['fetchedData'],
   methods: {
     selectMe : function(idx){
-  this.$store.dispatch('optionPicked',this.fetchedData[idx]);
+      this.$store.dispatch('optionPicked',this.fetchedData[idx]);
     },
     checkSelected : function(idx){
       return {
@@ -258,7 +262,7 @@ Vue.component('chapter-slideout', {
             return {
                 name: chapter.name,
                 number: chapter.number,
-                link: '../' + chapter.link
+                link: `../${chapter.link}/`
             }
         });
     }
@@ -303,6 +307,29 @@ if('serviceWorker' in navigator) {
     });
 
   navigator.serviceWorker.ready.then(function(registration) {
-     console.log('Service Worker Ready');
+    console.log('Service Worker Ready');
   });
 }
+
+
+window.onload = (event) => {
+  let links = [...document.querySelectorAll('.chapter-drawer-menu-item a')];
+  let urls = [];
+
+  if(links.length == 0){
+    return;
+  }
+
+  caches.open(`minimal-bible-${serviceWorkerVersion}`).then(function(cache){
+    
+    for(link of links){
+      let url = new URL(link.href)
+      urls.push(url.pathname);
+    }
+
+    cache.addAll(urls);
+  });
+  
+
+
+};
