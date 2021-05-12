@@ -177,10 +177,11 @@ body{
     border-bottom: 1px solid #ccc;
     padding: 10px 0;
     display: block;
-    font-family: 'Lora';
+    /* font-family: 'Lora';
     font-style: italic;
-    font-weight: 800;
-    font-size: 1.1em;
+    font-weight: 800;*/
+    font-size: 0.875rem;
+    font-weight: bold;
 }
 
 .chapter-drawer-menu-item a:hover{
@@ -231,11 +232,11 @@ body{
   border-left: none;
 }
 
-h1, h2, h3, h4{
+/* h1, h2, h3, h4{
   font-family: 'Lora';
   font-style: italic;
   font-weight: 700;
-}
+} */
 
 h1 {
     text-align: center;
