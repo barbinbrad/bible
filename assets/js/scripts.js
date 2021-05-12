@@ -1,30 +1,11 @@
 document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
-let chapters;
-let books;
-
-fetch('../../read/chapters.json').then(
-    function(data){ return data.json();}
-).then(
-    function(json){
-        chapters = json;
-    }
-);
-
-fetch('../../read/books.json').then(
-  function(data){ return data.json();}
-).then(
-  function(json){
-      books = json;
-  }
-);
-
-const bookSearch = function(q){
+const bookSearch = function(books, q){
   return books.filter(function(book){
       return book.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
   }).map(function(book) {
-    return book['name'];
+    return book.name;
   });
 };
 
@@ -33,14 +14,21 @@ const firstChapterLink = function(book){
 };
 
 const state = {
+  books: [],
+  chapters: [],
   autocompleteList : [],
-  chapterList: [],
-  inputData : '',
-  focusIndex : '',
-  inputFocus : false
+  autocompleteInput: '',
+  autocompleteIndex: 0,
+  inputFocus: false
 };
 
 const mutations = {
+  INITIALIZE_BOOKS(state, payload){
+    state.books = payload;
+  },
+  INITIALIZE_CHAPTERS(state, payload){
+    state.chapters = payload;
+  },
   UPDATE_AUTOCOMPLETE_LIST(state, newList){
     state.autocompleteList = newList
   },
@@ -48,26 +36,26 @@ const mutations = {
     state.autocompleteList = []
   },
   UPDATE_AUTOCOMPLETE_INPUT(state, text){
-    state.inputData = text;
+    state.autocompleteInput = text;
   },
   SET_AUTOCOMPLETE_FOCUS(state, val){
-    state.focusIndex = val;
+    state.autocompleteIndex = val;
   },
   ADJUST_AUTOCOMPLETE_FOCUS(state, val){
-    if(state.focusIndex === ''){
-      state.focusIndex = 0
+    if(state.autocompleteIndex === ''){
+      state.autocompleteIndex = 0
     }else{
-      state.focusIndex += val
-      if(state.focusIndex<0){
-        state.focusIndex = 0
-      }else if(state.focusIndex>0 && state.focusIndex>state.autocompleteList.length-1){
-        state.focusIndex = state.autocompleteList.length-1
+      state.autocompleteIndex += val
+      if(state.autocompleteIndex<0){
+        state.autocompleteIndex = 0
+      }else if(state.autocompleteIndex>0 && state.autocompleteIndex>state.autocompleteList.length-1){
+        state.autocompleteIndex = state.autocompleteList.length-1
       }      
     }
 
   },
   RESET_AUTOCOMPLETE_FOCUS(state){
-    state.focusIndex = ''
+    state.autocompleteIndex = ''
   },
   UPDATE_AUTOCOMPLETE_FOCUS(state,val){
     state.inputFocus = val
@@ -76,8 +64,28 @@ const mutations = {
 };
 
 const actions = {
-  searchData({commit}, q){
-    var searchResult = bookSearch(q)  
+  initializeBooks({commit}){
+    fetch('../../read/books.json').then(
+      function(data){ 
+        return data.json();}
+    ).then(
+      function(books){
+          commit('INITIALIZE_BOOKS', books);
+      }
+    );
+  },
+  initializeChapters({commit}){
+    fetch('../../read/chapters.json').then(
+      function(data){ 
+        return data.json();}
+    ).then(
+      function(chapters){
+          commit('INITIALIZE_CHAPTERS', chapters);
+      }
+    );
+  },
+  searchData({commit, state}, q){
+    var searchResult = bookSearch(state.books, q);
     commit('UPDATE_AUTOCOMPLETE_LIST', searchResult);
     commit('ADJUST_AUTOCOMPLETE_FOCUS', 0);    
   },
@@ -111,9 +119,10 @@ const store = new Vuex.Store({
 
 Vue.component('autocomplete',{
 	template: '#autocomplete',
-  created : function(){
+  created(){
+    this.$store.dispatch('initializeBooks');
   },
-  data: function(){
+  data(){
     return {}
   },
   computed : {
@@ -126,7 +135,7 @@ Vue.component('autocomplete',{
     },
     inputtext : {
       get () {
-        return this.$store.state.inputData
+        return this.$store.state.autocompleteInput
       },
       set (value) {
         this.$store.dispatch('changeInput', value);      
@@ -159,7 +168,7 @@ Vue.component('autocomplete',{
             this.$store.dispatch('focusChange',-1);
             break;
           case 13: 
-            this.$store.dispatch('optionPicked', this.autocompleteList[this.$store.state.focusIndex]);
+            this.$store.dispatch('optionPicked', this.autocompleteList[this.$store.state.autocompleteIndex]);
             e.target.blur();
             //this.$store.dispatch('inputFocus',false);
             break;
@@ -188,7 +197,7 @@ Vue.component('list',{
     },
     checkSelected : function(idx){
       return {
-        'selected' : idx == this.$store.state.focusIndex
+        'selected' : idx == this.$store.state.autocompleteIndex
       }
     },
     mouseHover : function(idx){
@@ -199,17 +208,23 @@ Vue.component('list',{
 
 Vue.component('chapter-slideout', {
   template: '#chapter-slideout',
+  created(){
+    this.$store.dispatch('initializeChapters');
+  },
   props: {
     book: {
       type: String
     }
-  },data: () => ({
-    isOpen: false,
-  }),
+  },
+  data(){
+    return {
+      isOpen: false,
+    }   
+  },
   computed: {
     bookChapters() {
         let filter = this.book;
-        return chapters.filter(function(chapter){
+        return this.$store.state.chapters.filter(function(chapter){
             return chapter.name == filter;
         }).map(function(chapter){
             return {
@@ -238,5 +253,5 @@ Vue.component('chapter-slideout', {
 
 new Vue({
 	el: '#navigation',
-  //store
+  store
 });
