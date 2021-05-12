@@ -27,10 +27,10 @@ const link = function(linkDescription){
     let lastToken = tokens.pop();
 
     if(isNaN(lastToken)){
-      return `../${linkDescription}+1`;
+      return `../${linkDescription}+1/`;
     }
     else{
-      return `../${tokens.join(' ')}+${lastToken}`
+      return `../${tokens.join(' ')}+${lastToken}/`
     }
      
 };
@@ -285,3 +285,20 @@ new Vue({
 	el: '#navigation',
   store
 });
+
+
+/* 
+  Service Worker 
+  Note: This ought to be the last thing loaded  
+*/
+
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+    .then(function(registration) {
+          console.log('Service Worker Registered');
+    });
+
+  navigator.serviceWorker.ready.then(function(registration) {
+     console.log('Service Worker Ready');
+  });
+}

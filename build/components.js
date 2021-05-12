@@ -19,7 +19,7 @@ const ChapterDrawer = chapterDrawerTemplate();
 function autocompleteTemplate(){
     html = '<script type="text/x-template" id="autocomplete">';
     html +=     '<div>';
-    html +=         '<input type="text" placeholder="Books" @keyup="fetchData()" @keydown="setFocus" @focus="inputFocus(true)" @blur="inputFocus(false)" v-model="inputtext" v-bind:class="{ isFocused  : isFocus }" class="form-control"/>';
+    html +=         '<input type="text" placeholder="Search" @keyup="fetchData()" @keydown="setFocus" @focus="inputFocus(true)" @blur="inputFocus(false)" v-model="inputtext" v-bind:class="{ isFocused  : isFocus }" class="form-control"/>';
     html +=         '<list :fetchedData="autocompleteList"></list>'  
     html +=     '</div>';
     html += '</script>';
