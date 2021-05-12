@@ -23,11 +23,13 @@ const VersesTable = require('../database/verses');
         html +=     `<title>${chapter.name} ${chapter.number}</title>`;
         html +=     '<meta name="viewport" content="width=device-width">';
         html +=     `<meta name="description" content="${chapter.name} Chapter ${chapter.number}">`;
+        html +=     '<meta name="theme-color" content="#317EFB"/>';
         html +=     '<link rel="preconnect" href="https://fonts.gstatic.com">';
-        html +=     '<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,700&display=swap" rel="stylesheet">';
+        html +=     '<link defer href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,700&display=swap" rel="stylesheet">';
         html +=     '<link rel="stylesheet" href="../../assets/css/styles.css">';
         html +=     '<link rel="stylesheet" href="../../assets/css/print.css" media="print">';
-        html +=     '<meta name="theme-color" content="#FFFFFF"></meta>';        
+        html +=     '<link rel="apple-touch-icon" href="../../assets/icons/maskable_icon_x192.png">';  
+        html +=     '<link rel="manifest" href="../../manifest.json">';      
         html += '</head>';
         html += '<body>';
         html +=     '<div id="navigation">';
@@ -50,7 +52,7 @@ const VersesTable = require('../database/verses');
         const verses = await versesTable.getAll(chapter.name, chapter.number);
 
         for(verse of verses){
-            html +=     `<span id="${verse.slug}-${verse.chapter}-${verse.verse}">${verse.text}&nbsp;</span>`;
+            html +=         `<span id="${verse.slug}-${verse.chapter}-${verse.verse}">${verse.text}&nbsp;</span>`;
         }
 
         html +=         '</p>';
@@ -67,9 +69,7 @@ const VersesTable = require('../database/verses');
         html += components.AutoCompleteResults;
         html += components.ChapterDrawer;
 
-        html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.js"></script>';
-        html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.0.0/vuex.js"></script>';
-        html += '<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>';
+        html += '<script src="../../assets/js/vue.js"></script>';
         html += '<script src="../../assets/js/scripts.js"></script>'
         html += '</body>'
         html += '</html>';
