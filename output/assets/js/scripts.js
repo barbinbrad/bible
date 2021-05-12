@@ -2,6 +2,7 @@ document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
 const serviceWorkerVersion = '0.0.1';
+// TODO: this should only be declared in one place
 
 const getAutocompleteResults = function(state, q){
   // If the query could be for more than one book, return the books
