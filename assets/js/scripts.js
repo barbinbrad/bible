@@ -1,16 +1,38 @@
 document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
-const bookSearch = function(books, q){
-  return books.filter(function(book){
-      return book.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
+
+const search = function(state, q){
+  let result = state.books.filter(function(book){
+    return book.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
   }).map(function(book) {
     return book.name;
   });
+
+  if(result && result.length <= 1){
+    console.log('looking at chapters');
+    return state.chapters.filter(function(chapter){
+      return `${chapter.name} ${chapter.number}`.toLowerCase().indexOf(q.toLowerCase()) > -1;
+    }).map(function(chapter) {
+      return chapter.name + ' ' + chapter.number;
+    });
+  } else{
+    console.log('looking at books');
+    return result;
+  }
 };
 
-const firstChapterLink = function(book){
-    return `../${book}+1`;
+const link = function(linkDescription){
+    let tokens = linkDescription.split(' ');
+    let lastToken = tokens.pop();
+
+    if(isNaN(lastToken)){
+      return `../${linkDescription}+1`;
+    }
+    else{
+      return `../${tokens.join(' ')}+${lastToken}`
+    }
+     
 };
 
 const state = {
@@ -30,37 +52,43 @@ const mutations = {
     state.chapters = payload;
   },
   UPDATE_AUTOCOMPLETE_LIST(state, newList){
+    console.log('UPDATE_AUTOCOMPLETE_LIST', state.autocompleteIndex);
     state.autocompleteList = newList
   },
   RESET_AUTOCOMPLETE(state){
+    console.log('RESET_AUTOCOMPLETE', state.autocompleteIndex);
     state.autocompleteList = []
   },
   UPDATE_AUTOCOMPLETE_INPUT(state, text){
+    console.log('UPDATE_AUTOCOMPLETE_INPUT', text);
     state.autocompleteInput = text;
   },
   SET_AUTOCOMPLETE_FOCUS(state, val){
+    console.log('SET_AUTOCOMPLETE_FOCUS', state.autocompleteIndex);
     state.autocompleteIndex = val;
   },
   ADJUST_AUTOCOMPLETE_FOCUS(state, val){
+    console.log('ADJUST_AUTOCOMPLETE_FOCUS', state.autocompleteIndex);
     if(state.autocompleteIndex === ''){
-      state.autocompleteIndex = 0
+      state.autocompleteIndex = 0;
     }else{
       state.autocompleteIndex += val
       if(state.autocompleteIndex<0){
-        state.autocompleteIndex = 0
-      }else if(state.autocompleteIndex>0 && state.autocompleteIndex>state.autocompleteList.length-1){
-        state.autocompleteIndex = state.autocompleteList.length-1
-      }      
+        state.autocompleteIndex = 0;
+      } 
+      else if(state.autocompleteIndex>0 && state.autocompleteIndex>state.autocompleteList.length-1){
+        state.autocompleteIndex = state.autocompleteList.length-1;
+      }     
     }
-
   },
   RESET_AUTOCOMPLETE_FOCUS(state){
+    console.log('RESET_AUTOCOMPLETE_FOCUS');
     state.autocompleteIndex = ''
   },
   UPDATE_AUTOCOMPLETE_FOCUS(state,val){
+    console.log('UPDATE_AUTOCOMPLETE_FOCUS');
     state.inputFocus = val
   }
-
 };
 
 const actions = {
@@ -85,14 +113,14 @@ const actions = {
     );
   },
   searchData({commit, state}, q){
-    var searchResult = bookSearch(state.books, q);
+    var searchResult = search(state, q);
     commit('UPDATE_AUTOCOMPLETE_LIST', searchResult);
     commit('ADJUST_AUTOCOMPLETE_FOCUS', 0);    
   },
   optionPicked({commit}, selectedText){;
     commit('UPDATE_AUTOCOMPLETE_INPUT',selectedText);    
     commit('RESET_AUTOCOMPLETE');
-    window.location.href = firstChapterLink(selectedText);
+    window.location.href = link(selectedText);
   },
   resetData({commit}){
     commit('RESET_AUTOCOMPLETE');
@@ -101,6 +129,7 @@ const actions = {
     commit('UPDATE_AUTOCOMPLETE_INPUT',text);
   },
   focusChange({commit}, val){
+    console.log('focusChange', val)
     commit('ADJUST_AUTOCOMPLETE_FOCUS',val);
   },
   setFocus({commit}, val){
@@ -228,7 +257,8 @@ Vue.component('chapter-slideout', {
             return chapter.name == filter;
         }).map(function(chapter){
             return {
-                name: chapter.name + ' ' + chapter.number,
+                name: chapter.name,
+                number: chapter.number,
                 link: '../' + chapter.link
             }
         });

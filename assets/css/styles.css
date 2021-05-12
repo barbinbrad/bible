@@ -3,6 +3,9 @@
   box-sizing: border-box;
 }
 
+::-moz-selection { background: rgb(0, 255, 98); }
+::selection { background: rgb(0, 255, 98); }
+
 body{
   padding: 0;
   margin: 0;
@@ -61,18 +64,28 @@ body{
   width: 100%
 }
 
+.search .input input.isFocused{
+  box-shadow: 0 0 0 0px #fff, 0 0 0 3px rgba(59, 130, 246, 0.5), 0 0 transparent;
+  border: 1px solid transparent;
+}
+
 .search .results{
+  margin-top: 3px;
   position: absolute;
   background: #ffffff;
   width: 100%;
   max-width: 14rem;
-  z-index: 999
+  z-index: 999;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  font-size: 0.875rem;
 }
 
 .search .results .list-group{
   list-style: none;
   border: 1px solid rgb(209,213,219);
-  border-radius: 0.375rem
+  border-radius: 0.375rem;
+  max-height: 320px;
+  overflow: auto;
 }
 
 .search .results .list-group-item{
@@ -83,8 +96,9 @@ body{
 }
 
 .search .results .selected{
-  background: #409eff;
-  color: white
+  background: rgb(79,70,229);
+  color: white;
+  font-weight:bold;
 }
 
 .search #listdata{
@@ -114,7 +128,7 @@ body{
     width: 220px;
     background: white;
     border-right: 1px solid #ddd;
-    z-index: 999;
+    z-index: 9999;
     transform: translateX(-100%);
     transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
     overflow: auto
@@ -150,7 +164,6 @@ body{
     margin: 0;
     padding: 0;
     list-style:none;
-    border-bottom: 1px solid #ddd
 }
 
 .chapter-drawer-menu-item a {
@@ -161,9 +174,18 @@ body{
     text-decoration: none;
     color: #333;
     width: 100%;
+    border-bottom: 1px solid #ccc;
     padding: 10px 0;
-    display: block
+    display: block;
+    font-family: 'Lora';
+    font-style: italic;
+    font-weight: 800;
+    font-size: 1.1em;
 }
+
+.chapter-drawer-menu-item a:hover{
+  background-color: rgb(243,244,246);
+} 
 
 #content {
   position: relative;
@@ -205,12 +227,16 @@ body{
   border-left: none;
 }
 
+h1, h2, h3, h4{
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 700;
+}
 
 h1 {
     text-align: center;
     text-transform: uppercase;
     font-size: 6em;
-    font-weight: 700;
     color: #2d2d2d;
     letter-spacing:-.04em
 }
