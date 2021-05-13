@@ -268,7 +268,7 @@ Vue.component('chapter-slideout', {
             return {
                 name: chapter.name,
                 number: chapter.number,
-                link: `/${chapter.link}/`,
+                link: `/read/${chapter.link}/`,
                 active: (chapter.name == name && chapter.number == number),
             }
         });
