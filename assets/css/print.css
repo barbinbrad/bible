@@ -1,11 +1,15 @@
-@page {
-    margin: 20px;
-}
+
 
 @page :first {
-    margin-top: 250pt;
+    margin-top: 100pt;
 }
 
-h3 {
-    page-break-before: always;
+#navigation, .next, .prev{
+    display: none;
+}
+
+#content{
+    position: relative;
+    margin: 0;
+    min-height: 0;
 }

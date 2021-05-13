@@ -2,8 +2,9 @@ document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
 const development = true;
-const serviceWorkerVersion = '0.0.1';
-// TODO: this should only be declared in one place
+// TODO: service worker version should only be declared in one place
+const serviceWorkerVersion = '0.0.1'; 
+
 
 const getAutocompleteResults = function(state, q){
   // If the query could be for more than one book, return the books
@@ -27,9 +28,9 @@ const getAutocompleteResults = function(state, q){
 };
 
 const getChapterLink = function(input){
-    // Genesis 2 -> Genesis+2
-    // Genesis -> Genesis+1
-    // 1 Kings 1 -> 1 Kings+1
+    // getChapterLink(Genesis 2)  =>  Genesis+2
+    // getChapterLink(Genesis)    =>  Genesis+1
+    // getChapterLink(1 Kings 1)  =>  1 Kings+1
     let tokens = input.split(' ');
     let lastToken = tokens.pop();
     return (isNaN(lastToken)) ? `/read/${input}+1/` : `/read/${tokens.join(' ')}+${lastToken}/`;  
@@ -113,7 +114,7 @@ const actions = {
       }
     );
   },
-  searchData({commit, state}, q){
+  searchBible({commit, state}, q){
     var searchResult = getAutocompleteResults(state, q);
     commit('UPDATE_AUTOCOMPLETE_LIST', searchResult);
     commit('ADJUST_AUTOCOMPLETE_FOCUS', 0);    
@@ -183,7 +184,7 @@ Vue.component('autocomplete',{
 	methods: {
     fetchData: function(e){
       if(this.inputtext.length>=1 && this.isFocus){
-        this.$store.dispatch('searchData', this.inputtext)
+        this.$store.dispatch('searchBible', this.inputtext)
       }
       else{
         this.$store.dispatch('resetData')
@@ -224,10 +225,10 @@ Vue.component('list',{
 	template: '#results-list',
   created : function(){
   },
-  props : ['fetchedData'],
+  props : ['results'],
   methods: {
-    selectMe : function(idx){
-      this.$store.dispatch('optionPicked',this.fetchedData[idx]);
+    selectResult : function(idx){
+      this.$store.dispatch('optionPicked',this.results[idx]);
     },
     checkSelected : function(idx){
       return {
@@ -303,7 +304,7 @@ new Vue({
   Service Worker
   -------------------------------------------- 
   
-  Note: This ought to be the last thing called  
+  Note: This should be the last thing called  
  
  */
 
@@ -321,7 +322,8 @@ if(development == false){
       
       
       window.onload = (event) => {
-        let links = [...document.querySelectorAll('.chapter-drawer-menu-item a')];
+        // get all outbound links in the DOM
+        let links = [...document.querySelectorAll('a')];
         let urls = [];
       
         if(links.length == 0){
@@ -329,12 +331,13 @@ if(development == false){
         }
       
         caches.open(`minimal-bible-${serviceWorkerVersion}`).then(function(cache){
-          
+          // iterate over the links in the DOM
           for(link of links){
+            // get the relative URL
             let url = new URL(link.href)
             urls.push(url.pathname);
           }
-      
+          // cache all outbound links
           cache.addAll(urls);
         });
       };

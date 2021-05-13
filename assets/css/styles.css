@@ -20,6 +20,10 @@ body{
   display: none;
 }
 
+#navigation {
+  min-height: 65px;
+}
+
 .search{
   display: flex;
   min-height: 65px;
@@ -175,7 +179,7 @@ body{
     color: #333;
     width: 100%;
     border-bottom: 1px solid #ccc;
-    padding: 10px 0;
+    padding: 10px 1.5rem;
     display: block;
     font-size: 0.875rem;
     font-weight: bold;
@@ -192,17 +196,19 @@ body{
 } 
 
 #content {
-  position: relative;
-  margin: 0 auto;
-  max-width: 40rem;
-  padding:0 2rem  10rem;
+  margin: 8rem auto 0;
+  width: 100%;
   min-height: calc(100vh - 128px);
+  position: absolute; 
+  top: 65px;
 }
 
-p.hacker{
-    color: gray;
-    font-weight: 300;
+#content > div{ 
+  padding:0 2rem  10rem;
+  max-width: 40rem;
+  margin: 0 auto;
 }
+
 
 .next, .prev{
   position: fixed;
@@ -225,6 +231,23 @@ p.hacker{
     width: 50%;
     position: absolute
   }
+
+  .search .results{
+    margin-top: 0;
+    max-width: 100%;
+    font-size: 1.25rem;
+    position: fixed;
+    top: 65px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    
+  }
+
+  .search .results .list-group{
+    max-height: calc(100vh - 65px);
+    border-radius: 0;
+  }
 }
 
 .next{
@@ -237,11 +260,6 @@ p.hacker{
   border-left: none;
 }
 
-/* h1, h2, h3, h4{
-  font-family: 'Lora';
-  font-style: italic;
-  font-weight: 700;
-} */
 
 h1 {
     text-align: center;
@@ -254,7 +272,7 @@ h1 {
 ul {
     margin: 0 auto;
     padding: 0;
-    text-align:center
+    list-style:none;
 }
 
 
@@ -264,7 +282,7 @@ h2 {
     font-weight: 700;
     color: #2d2d2d;
     letter-spacing: -.04em;
-    margin:2em 0
+    margin:0 0 2em
 }
 
 h3 {
@@ -297,30 +315,11 @@ p {
     color: white;
 }
 
-hr {
-    margin: 5em 0;
-    border: 0;
-    height: 1px;
-    background-image:linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0))
-}
-
-footer {
-    width: 100%;
-    display: block;
-    text-align: center;
-    margin: 5em 0;
-    font-size: 11px;
-    color:#aaa
-}
-
-footer a {
-    color:#888;
-}
 
 @media only screen and (max-width: 720px) {
    
 
-    #content {
+    #content > div {
         padding:0 1.25em 3em;
     }
 
@@ -333,3 +332,6 @@ footer a {
     }
 }
 
+@media (prefers-color-scheme: dark){
+
+}
