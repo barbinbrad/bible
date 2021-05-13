@@ -42,7 +42,7 @@ const VersesTable = require('../database/verses');
         html +=                  '<autocomplete></autocomplete>';
         html +=                 '</div>';
         html +=             '</div>';
-        html +=             `<chapter-slideout book="${chapter.name}"></chapter-slideout>`;
+        html +=             `<chapter-slideout book="${chapter.name}" chapter="${chapter.number}"></chapter-slideout>`;
         html +=         '</div>';
         html +=     '</div>';
         html +=     '<div id="content">';
