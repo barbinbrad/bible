@@ -20,7 +20,7 @@ function autocompleteTemplate(){
     html = '<script type="text/x-template" id="autocomplete">';
     html +=     '<div>';
     html +=         '<input type="text" placeholder="Search" @keyup="fetchData()" @keydown="setFocus" @focus="inputFocus(true)" @blur="inputFocus(false)" v-model="inputtext" :class="{ isFocused  : isFocus }" class="form-control"/>';
-    html +=         '<list :fetchedData="autocompleteList"></list>'  
+    html +=         '<list :results="autocompleteList"></list>'  
     html +=     '</div>';
     html += '</script>';
 
@@ -30,9 +30,9 @@ function autocompleteTemplate(){
 function autocompleteResultsTemplate(){
     html = '<script type="text/x-template" id="results-list">';
     html +=     '<div class="results">';
-    html +=         '<div class="autolist" v-if="fetchedData.length>0">';
+    html +=         '<div class="autolist" v-if="results.length>0">';
     html +=             '<ul class="list-group">';
-    html +=                 '<li class="list-group-item" :class="checkSelected(index)" v-for="(result, index) in fetchedData" @mousemove="mouseHover(index)" @mousedown="selectMe(index)">{{result}}</li>';
+    html +=                 '<li class="list-group-item" :class="checkSelected(index)" v-for="(result, index) in results" @mousemove="mouseHover(index)" @mousedown="selectResult(index)">{{result}}</li>';
     html +=             '</ul>';
     html +=         '</div>';
     html +=     '</div>';

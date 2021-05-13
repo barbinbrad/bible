@@ -24,12 +24,10 @@ const VersesTable = require('../database/verses');
         html +=     '<meta name="viewport" content="width=device-width">';
         html +=     `<meta name="description" content="${chapter.name} Chapter ${chapter.number}">`;
         html +=     '<meta name="theme-color" content="#ffffff"/>';
-        //html +=     '<link rel="preconnect" href="https://fonts.gstatic.com">';
-        //html +=     '<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,700&display=swap" rel="stylesheet">';
-        html +=     '<link rel="stylesheet" href="../../assets/css/styles.css" media="all">';
-        html +=     '<link rel="stylesheet" href="../../assets/css/print.css" media="print">';
-        html +=     '<link rel="apple-touch-icon" href="../../assets/icons/maskable_icon_x192.png">';  
-        html +=     '<link rel="manifest" href="../../manifest.json">';      
+        html +=     '<link rel="stylesheet" href="/assets/css/styles.css" media="all">';
+        html +=     '<link rel="stylesheet" href="/assets/css/print.css" media="print">';
+        html +=     '<link rel="apple-touch-icon" href="/assets/icons/maskable_icon_x192.png">';  
+        html +=     '<link rel="manifest" href="/manifest.json">';      
         html += '</head>';
         html += '<body>';
         html +=     '<div id="navigation">';
@@ -46,31 +44,33 @@ const VersesTable = require('../database/verses');
         html +=         '</div>';
         html +=     '</div>';
         html +=     '<div id="content">';
-        html +=         `<h2>${chapter.name} ${chapter.number}</h2>`
-        html +=         '<p>';
+        html +=         '<div>';
+        html +=             `<h2>${chapter.name} ${chapter.number}</h2>`
+        html +=             '<p>';
         
         const verses = await versesTable.getAll(chapter.name, chapter.number);
 
         for(verse of verses){
-            html +=         `<span id="${verse.slug}-${verse.chapter}-${verse.verse}">${verse.text}&nbsp;</span>`;
+            html +=             `<span id="${verse.slug}-${verse.chapter}-${verse.verse}">${verse.text}&nbsp;</span>`;
         }
 
-        html +=         '</p>';
+        html +=             '</p>';
 
         if(chapter.previous){
-            html +=     `<a class="prev" href="../${utils.addPlusSignToNormalLink(chapter.previous)}/">${components.LeftArrow}</a>`;
+            html +=         `<a class="prev" href="../${utils.addPlusSignToNormalLink(chapter.previous)}/">${components.LeftArrow}</a>`;
         }
         if(chapter.next){
-            html +=     `<a class="next" href="../${utils.addPlusSignToNormalLink(chapter.next)}/">${components.RightArrow}</a>` 
+            html +=         `<a class="next" href="../${utils.addPlusSignToNormalLink(chapter.next)}/">${components.RightArrow}</a>` 
         }
+        html +=         '</div>';
         html +=     '</div>'
 
         html += components.AutoComplete;    
         html += components.AutoCompleteResults;
         html += components.ChapterDrawer;
 
-        html += '<script src="../../assets/js/vue.js"></script>';
-        html += '<script src="../../assets/js/scripts.js"></script>'
+        html += '<script src="/assets/js/vue.js"></script>';
+        html += '<script src="/assets/js/scripts.js"></script>'
         html += '</body>'
         html += '</html>';
         

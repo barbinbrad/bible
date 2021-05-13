@@ -6,6 +6,7 @@ const ChaptersTable = require('../database/chapters');
 
 (async function() { 
     console.log('Building chapters.json...');
+    // TODO: the amount of information could be drastically reduced
     const start = new Date().getTime();
 
     const db = new Database(config.databaseLocation);
