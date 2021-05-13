@@ -5,7 +5,7 @@ self.addEventListener('install', e => {
     e.waitUntil(
       caches.open(cacheName).then(cache => {
         return cache.addAll([
-          //`/`,
+          `/`,
           `/assets/css/styles.css`,
           `/assets/css/print.css`,
           `/assets/js/vue.js`,

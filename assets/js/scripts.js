@@ -1,6 +1,7 @@
 document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
+const development = true;
 const serviceWorkerVersion = '0.0.1';
 // TODO: this should only be declared in one place
 
@@ -28,10 +29,10 @@ const getAutocompleteResults = function(state, q){
 const getChapterLink = function(input){
     // Genesis 2 -> Genesis+2
     // Genesis -> Genesis+1
-    // 1 Kings -> 1 Kings+1
+    // 1 Kings 1 -> 1 Kings+1
     let tokens = input.split(' ');
     let lastToken = tokens.pop();
-    return (isNaN(lastToken)) ? `../${input}+1/` : `../${tokens.join(' ')}+${lastToken}/`;  
+    return (isNaN(lastToken)) ? `/read/${input}+1/` : `/read/${tokens.join(' ')}+${lastToken}/`;  
 };
 
 const state = {
@@ -93,7 +94,7 @@ const mutations = {
 
 const actions = {
   initializeBooks({commit}){
-    fetch('../../read/books.json').then(
+    fetch('/read/books.json').then(
       function(data){ 
         return data.json();}
     ).then(
@@ -103,7 +104,7 @@ const actions = {
     );
   },
   initializeChapters({commit}){
-    fetch('../../read/chapters.json').then(
+    fetch('/read/chapters.json').then(
       function(data){ 
         return data.json();}
     ).then(
@@ -247,6 +248,9 @@ Vue.component('chapter-slideout', {
   props: {
     book: {
       type: String
+    },
+    chapter: {
+      type: String
     }
   },
   data(){
@@ -256,14 +260,16 @@ Vue.component('chapter-slideout', {
   },
   computed: {
     bookChapters() {
-        let filter = this.book;
+        let name = this.book;
+        let number = this.chapter;
         return this.$store.state.chapters.filter(function(chapter){
-            return chapter.name == filter;
+            return chapter.name == name;
         }).map(function(chapter){
             return {
                 name: chapter.name,
                 number: chapter.number,
-                link: `../${chapter.link}/`
+                link: `/${chapter.link}/`,
+                active: (chapter.name == name && chapter.number == number),
             }
         });
     }
@@ -301,36 +307,36 @@ new Vue({
  
  */
 
-if('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
-    .then(function(registration) {
-          console.log('Service Worker Registered');
-    });
-
-  navigator.serviceWorker.ready.then(function(registration) {
-    console.log('Service Worker Ready');
-  });
+if(development == false){
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+          .then(function(registration) {
+                console.log('Service Worker Registered');
+          });
+      
+        navigator.serviceWorker.ready.then(function(registration) {
+          console.log('Service Worker Ready');
+        });
+      }
+      
+      
+      window.onload = (event) => {
+        let links = [...document.querySelectorAll('.chapter-drawer-menu-item a')];
+        let urls = [];
+      
+        if(links.length == 0){
+          return;
+        }
+      
+        caches.open(`minimal-bible-${serviceWorkerVersion}`).then(function(cache){
+          
+          for(link of links){
+            let url = new URL(link.href)
+            urls.push(url.pathname);
+          }
+      
+          cache.addAll(urls);
+        });
+      };
 }
 
-
-window.onload = (event) => {
-  let links = [...document.querySelectorAll('.chapter-drawer-menu-item a')];
-  let urls = [];
-
-  if(links.length == 0){
-    return;
-  }
-
-  caches.open(`minimal-bible-${serviceWorkerVersion}`).then(function(cache){
-    
-    for(link of links){
-      let url = new URL(link.href)
-      urls.push(url.pathname);
-    }
-
-    cache.addAll(urls);
-  });
-  
-
-
-};

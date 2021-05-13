@@ -177,12 +177,15 @@ body{
     border-bottom: 1px solid #ccc;
     padding: 10px 0;
     display: block;
-    /* font-family: 'Lora';
-    font-style: italic;
-    font-weight: 800;*/
     font-size: 0.875rem;
     font-weight: bold;
 }
+
+.chapter-drawer-menu-item a.active, .chapter-drawer-menu-item a.active:hover{
+    background: rgb(79,70,229);
+    color: white;
+    font-weight:bold;
+  }
 
 .chapter-drawer-menu-item a:hover{
   background-color: rgb(243,244,246);
@@ -192,11 +195,13 @@ body{
   position: relative;
   margin: 0 auto;
   max-width: 40rem;
-  padding:0 2rem  10rem
+  padding:0 2rem  10rem;
+  min-height: calc(100vh - 128px);
 }
 
-#content p{
-  min-height: 100vh;
+p.hacker{
+    color: gray;
+    font-weight: 300;
 }
 
 .next, .prev{
@@ -271,6 +276,25 @@ p {
     font-size: 1.25rem;
     color: #333;
     line-height:1.825
+}
+
+.button{
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: .75rem 1rem;
+    box-shadow: 0 0 #0000,0 0 #0000,0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: .375rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px;
+}
+
+.button-primary{
+    background-image: linear-gradient(to right,#7c3aed,#4f46e5);
+    color: white;
 }
 
 hr {
