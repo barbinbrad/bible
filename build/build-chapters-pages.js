@@ -1,7 +1,9 @@
 const fs = require('fs');
+
 const utils = require('./utils');
 const components = require('./components');
 const config = require('../config');
+
 const Database = require('../database/database');
 const VersesTable = require('../database/verses');
 
@@ -30,6 +32,7 @@ const VersesTable = require('../database/verses');
         html +=     '<link rel="manifest" href="/manifest.json">';      
         html += '</head>';
         html += '<body>';
+        html += '<div id="app">';
         html +=     '<div id="navigation">';
         html +=         '<div>';
         html +=             '<div class="search">';
@@ -41,6 +44,7 @@ const VersesTable = require('../database/verses');
         html +=                 '</div>';
         html +=             '</div>';
         html +=             `<chapter-slideout book="${chapter.name}" chapter="${chapter.number}"></chapter-slideout>`;
+        html +=             '<bookmark-dropdown></bookmark-dropdown>';
         html +=         '</div>';
         html +=     '</div>';
         html +=     '<div id="content">';
@@ -63,11 +67,12 @@ const VersesTable = require('../database/verses');
             html +=         `<a class="next" href="../${utils.addPlusSignToNormalLink(chapter.next)}/">${components.RightArrow}</a>` 
         }
         html +=         '</div>';
-        html +=     '</div>'
-
+        html +=     '</div>';
+        html += '</div>';
         html += components.AutoComplete;    
         html += components.AutoCompleteResults;
         html += components.ChapterDrawer;
+        html += components.BookmarkDropdown;
 
         html += '<script src="/assets/js/vue.js"></script>';
         html += '<script src="/assets/js/scripts.js"></script>'

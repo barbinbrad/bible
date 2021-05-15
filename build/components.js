@@ -7,6 +7,8 @@ const RightArrow = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.5 21
 const SearchIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>';
 const MenuIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
 const ExitIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+const BookmarkIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+
 
 /*
     Vue Components
@@ -15,6 +17,7 @@ const ExitIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0
 const AutoComplete = autocompleteTemplate(); 
 const AutoCompleteResults = autocompleteResultsTemplate();
 const ChapterDrawer = chapterDrawerTemplate();
+const BookmarkDropdown = bookmarkDropdownTemplate();
 
 function autocompleteTemplate(){
     html = '<script type="text/x-template" id="autocomplete">';
@@ -42,7 +45,7 @@ function autocompleteResultsTemplate(){
 }
 
 function chapterDrawerTemplate(){
-    html = '<script id="chapter-slideout" type="text/x-template">';
+    html = '<script type="text/x-template" id="chapter-slideout">';
     html +=     '<div class="chapter-drawer" :class="{ isOpen: isOpen }" @focusout="close">';
     html +=         '<div class="chapter-drawer-opener" v-if="!isOpen" @click="open">';
     html +=             MenuIcon;
@@ -63,4 +66,28 @@ function chapterDrawerTemplate(){
     return html;
 }
 
-module.exports = {LeftArrow, RightArrow, SearchIcon, AutoComplete, AutoCompleteResults, ChapterDrawer};
+function bookmarkDropdownTemplate(){
+    html = '<script id="bookmark-dropdown" type="text/x-template">';
+    html +=     '<div class="bookmark-dropdown" v-click-outside="close">';
+    html +=         '<div @click="toggle" class="bookmark-dropdown-opener">';
+    html +=             BookmarkIcon
+    html +=         '</div>';
+    html +=         '<div v-if="isVisible" class="bookmark-dropdown-options">';
+    html +=             '<ul>';
+    html +=                 '<li @click="set">Set Bookmark</li>';
+    html +=                 '<li v-if="!disabled" @click="get">{{getBookmarkText}}</li>';
+    html +=             '</ul>';
+    html +=         '</div>';
+    html +=     '</div>'
+    html += '</script>';
+    return html;
+}
+
+
+
+
+module.exports = {
+    LeftArrow, RightArrow, SearchIcon, 
+    AutoComplete, AutoCompleteResults, 
+    ChapterDrawer, BookmarkDropdown
+};
