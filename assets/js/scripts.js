@@ -145,6 +145,7 @@ const actions = {
   }
 };
 
+
 const store = new Vuex.Store({
     state,
     mutations,
@@ -293,9 +294,64 @@ Vue.component('chapter-slideout', {
   }
 });
 
+Vue.component('bookmark-dropdown',{
+    template: '#bookmark-dropdown',
+    created : function(){
+        console.log('getting bookmark from local storage');
+    },
+    data(){
+        return {
+            bookmark: '',
+            isVisible: false
+        }
+    },
+    computed: {
+        disabled(){
+            return (this.bookmark.length < 1);
+        },
+        getBookmarkText(){
+            return (this.bookmark.length < 1) ? 'No bookmark set' : this.bookmark;
+        }
+    },
+    methods: {
+        get(){
+            console.log('getting bookmark from local storage');
+            console.log('navigating to bookmark');
+        },
+        set(){
+            console.log('setting bookmark');
+        },
+        toggle(){
+            this.isVisible = !this.isVisible;
+        },
+        open(){
+            this.isVisible = true;    
+        },
+        close(){
+            this.isVisible = false; 
+        }
+    }
+});
+
+Vue.directive('click-outside', {
+    bind: function (el, binding, vnode) {
+      el.clickOutsideEvent = function (event) {
+        // here I check that click was outside the el and his children
+        if (!(el == event.target || el.contains(event.target))) {
+          // and if it did, call method provided in attribute value
+          vnode.context[binding.expression](event);
+        }
+      };
+      document.body.addEventListener('click', el.clickOutsideEvent)
+    },
+    unbind: function (el) {
+      document.body.removeEventListener('click', el.clickOutsideEvent)
+    },
+  });
+
 new Vue({
-	el: '#navigation',
-  store
+	el: '#app',
+    store
 });
 
 
