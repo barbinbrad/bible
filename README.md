@@ -19,7 +19,7 @@ Without trying to convince you, *dear reader*, that the Bible is worthwhile, the
 
 :mechanical_arm: Performance 
 ------
-Performance evaluation metrics are defined by Google's [Lighthouse](https://developers.google.com/web/tools/lighthouse) tool. According to these metrics, the "perfect" website scores perfectly across all categories. If you've ever spent an afternoon trying to get Lighthouse to do its all-100's-confetti-animation, then I recommend find something better to do with your time. 
+Performance evaluation metrics are defined by Google's [Lighthouse](https://developers.google.com/web/tools/lighthouse) tool. According to these metrics, the "perfect" website scores perfectly across all categories. 
 
 To optimize performance, the following strategy was used:
 
@@ -28,7 +28,7 @@ To optimize performance, the following strategy was used:
 - Minimize and cache all assets with Cloudflare DNS
 - Minimize the amount of external dependencies (like custom fonts and JS).
 
-Aside from `output/assets/js/vue.js (121KB)` and `output/assets/read/chapter.json (122KB)`, all files are under 10KB.
+All generated files are under 10KB except `output/assets/js/vue.js (121KB)` and `output/assets/read/chapter.json (122KB)`. 
 
 
 :convenience_store: Accessibility 
@@ -49,11 +49,11 @@ The goal of the "perfect" website is to encourage more frequent reading of the B
 
 :microscope: Technology
 ------
-The scraping and the building are decoupled through a SQLite database `./database/bible.db`. [Puppeteer](https://github.com/checkly/puppeteer-examples) is used for scraping. Node is used to limit the languages. Vue is used for autocomplete. And a fairly complex string builder is used to generate the html. 
+The scraping and the building are decoupled through a SQLite database located in `./database/bible.db`. [Puppeteer](https://github.com/checkly/puppeteer-examples) is used for scraping. Node is used for building to limit the language, but it's just basic string concatenation. Vue is used for the navigation components because it feels good. 
 
 
 :brain: Inspiration
 -------
-Manuel Matuzo: [My current HTML boilerplate](https://www.matuzo.at/blog/html-boilerplate/)
-Barry Smith: [motherf***ingwebsite.com](http://motherfuckingwebsite.com/)
+- Manuel Matuzo: [My current HTML boilerplate](https://www.matuzo.at/blog/html-boilerplate/)
+- Barry Smith: [motherf***ingwebsite.com](http://motherfuckingwebsite.com/)
 
