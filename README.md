@@ -1,5 +1,5 @@
 # The "Perfect" Website
-This imperfect repo creates a "perfect" website&ndash;a minimal, mostly-static, progressive Bible hosted [here](https://minimalbible.com/read/Luke+6). It doesn't use any fancy frameworks. Just some crappy JavaScript.
+This imperfect repo creates a "perfect" website&ndash;a minimal, mostly-static, progressive Bible hosted [here](https://minimalbible.com/read/Luke+6). The code is fairly crappy, so if you can make an improvement, please feel welcome!
 
 To create the "perfect" website using the imperfect repo, run `npm run scrape && npm run build`. The static site is generated in the `output` folder. To run the site locally run `cd ./output && python -m http.server`.
 
@@ -15,7 +15,7 @@ What makes a "perfect" website?
 
 :fire: Content 
 ------
-Without trying to convince you, *dear reader*, that the Bible is worthwhile, there still exists the issue of copyright. As surprising as it may sound, the Bible can be copyrighted. The good news is that after 70 years, copyrights on Bibles like the [American Standard Version](https://www.biblegateway.com/versions/American-Standard-Version-ASV-Bible/#copy) expire, and the translation becomes public domain. So in the spirit of obedience, there we scrape.
+Whether or not the bible is worthwhile is up to you to decide, *dear reader*. I've decided to scrape the the ASV version since it is in the public domain. But it would be awesome to have an open-source translation.
 
 
 :mechanical_arm: Performance 
