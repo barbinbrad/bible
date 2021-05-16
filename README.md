@@ -15,7 +15,7 @@ What makes a "perfect" website?
 
 :fire: Content 
 ------
-Whether or not the bible is worthwhile is up to you to decide, *dear reader*. I've decided to scrape the the ASV version since it is in the public domain. But it would be awesome to have an open-source translation.
+Whether or not the bible is worthwhile is up to you to decide, *dear reader*. From a content-perspective, the big problem is copyright. Bible translators do not share open-source values. To get around this problem, I've decided to scrape the the ASV version since it is in the public domain. Unfortunately, it's a bit old-Englishy.
 
 
 :mechanical_arm: Performance 
