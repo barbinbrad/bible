@@ -6,7 +6,7 @@
   "scripts": {
     "scrape": "node scraper/index.js",
     "prebuild": "node build/build-books-json.js && node build/build-chapters-json.js",
-    "build": "node build/build-table-of-content.js && node build/build-chapters-pages.js",
+    "build": "node build/build-pages.js",
     "test": "mocha --recursive test --timeout 10000"
   },
   "author": "Brad Barbin",

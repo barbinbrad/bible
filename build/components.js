@@ -74,7 +74,7 @@ function bookmarkDropdownTemplate(){
     html +=         '</div>';
     html +=         '<div v-if="isVisible" class="bookmark-dropdown-options">';
     html +=             '<ul>';
-    html +=                 '<li @click="set">Set Bookmark</li>';
+    html +=                 '<li :class="{ disabled : wasSet }" @click="set">{{setBookmarkText}}</li>';
     html +=                 '<li v-if="!disabled" @click="get">{{getBookmarkText}}</li>';
     html +=             '</ul>';
     html +=         '</div>';

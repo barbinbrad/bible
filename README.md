@@ -1,5 +1,5 @@
 # The "Perfect" Website
-This imperfect repo creates a "perfect" webite&ndash;a minimal, static, progressive Bible hosted [here](https://minimalbible.com/read/Matthew+5). It doesn't use any fancy frameworks. Just some crappy JavaScript.
+This imperfect repo creates a "perfect" website&ndash;a minimal, mostly-static, progressive Bible hosted [here](https://minimalbible.com/read/Luke+6). It doesn't use any fancy frameworks. Just some crappy JavaScript.
 
 To create the "perfect" website using the imperfect repo, run `npm run scrape && npm run build`. The static site is generated in the `output` folder. To run the site locally run `cd ./output && python -m http.server`.
 
