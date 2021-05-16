@@ -3,6 +3,7 @@ This imperfect repo creates a "perfect" website&ndash;a minimal, mostly-static, 
 
 To create the "perfect" website using the imperfect repo, run `npm run scrape && npm run build`. The static site is generated in the `output` folder. To run the site locally run `cd ./output && python -m http.server`.
 
+The basic gist is that a puppeteer web-scraper saves the results to SQLite database, which is then used to statically render each chapter of the Bible, with some navigation in Vue.
 
 What makes a "perfect" website?
 ------
@@ -28,7 +29,7 @@ To optimize performance, the following strategy was used:
 - Minimize and cache all assets with Cloudflare DNS
 - Minimize the amount of external dependencies (like custom fonts and JS).
 
-All generated files are under 10KB except `output/assets/js/vue.js (121KB)` and `output/assets/read/chapter.json (122KB)`. 
+All generated files are under 10KB except `output/assets/js/vue.js (121KB)` and `output/assets/read/chapter.json (122KB)`. These are both low-hanging fruit for performance enhacements.
 
 
 :convenience_store: Accessibility 
