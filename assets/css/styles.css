@@ -109,6 +109,10 @@ body{
   cursor: pointer
 }
 
+.bookmark-dropdown-options li{
+    padding: 10px 1rem;
+}
+
 .search .results .selected,
 .bookmark-dropdown-options li:hover{
   background: rgb(79,70,229);
@@ -116,14 +120,14 @@ body{
   font-weight:bold;
 }
 
-/* .bookmark-dropdown-options li.disabled
+.bookmark-dropdown-options li.disabled,
 .bookmark-dropdown-options li.disabled:hover{
     background: #ccc;
     color: #777;
     font-weight: 300;
     font-style: italic;
-    cursor: not-allowed;
-} */
+    cursor: not-allowed !important;
+}
 
 .search #listdata{
   position: absolute;
