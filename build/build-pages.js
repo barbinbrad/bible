@@ -26,10 +26,10 @@ const VersesTable = require('../database/verses');
         html +=     '<meta name="viewport" content="width=device-width">';
         html +=     `<meta name="description" content="${chapter.name} Chapter ${chapter.number}">`;
         html +=     '<meta name="theme-color" content="#ffffff"/>';
-        html +=     '<link rel="stylesheet" href="/assets/css/styles.css" media="all">';
-        html +=     '<link rel="stylesheet" href="/assets/css/print.css" media="print">';
-        html +=     '<link rel="apple-touch-icon" href="/assets/icons/maskable_icon_x192.png">';  
-        html +=     '<link rel="manifest" href="/manifest.json">';      
+        html +=     '<link rel="stylesheet" href="../../assets/css/styles.css" media="all">';
+        html +=     '<link rel="stylesheet" href="../../assets/css/print.css" media="print">';
+        html +=     '<link rel="apple-touch-icon" href="../../assets/icons/maskable_icon_x192.png">';  
+        html +=     '<link rel="manifest" href="../../manifest.json">';      
         html += '</head>';
         html += '<body>';
         html += '<div id="app">';
@@ -74,8 +74,8 @@ const VersesTable = require('../database/verses');
         html += components.ChapterDrawer;
         html += components.BookmarkDropdown;
 
-        html += '<script src="/assets/js/vue.js"></script>';
-        html += '<script src="/assets/js/scripts.js"></script>'
+        html += '<script src="../../assets/js/vue.js"></script>';
+        html += '<script src="../../assets/js/scripts.js"></script>'
         html += '</body>'
         html += '</html>';
         

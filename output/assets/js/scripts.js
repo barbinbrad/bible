@@ -32,7 +32,7 @@ const getChapterLink = function(input) {
     // getChapterLink(1 Kings 1)  =>  1 Kings+1
     let tokens = input.split(' ');
     let lastToken = tokens.pop();
-    return (isNaN(lastToken)) ? `/read/${input}+1/` : `/read/${tokens.join(' ')}+${lastToken}/`;
+    return (isNaN(lastToken)) ? `../${input}+1/` : `../${tokens.join(' ')}+${lastToken}/`;
 };
 
 const state = {
@@ -94,7 +94,7 @@ const actions = {
     initializeBooks({
         commit
     }) {
-        fetch('/read/books.json').then(
+        fetch('../../read/books.json').then(
             function(data) {
                 return data.json();
             }
@@ -107,7 +107,7 @@ const actions = {
     initializeChapters({
         commit
     }) {
-        fetch('/read/chapters.json').then(
+        fetch('../../read/chapters.json').then(
             function(data) {
                 return data.json();
             }
