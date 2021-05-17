@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+const config = require('../config');
 const { expect }  = require('chai');
 const browser = require('../scraper/browser');
 
@@ -10,7 +10,7 @@ describe('Bible Scraping Last Chapter Layout Test', () => {
     before(async () => { 
         chrome = await browser.startBrowser();
         page = await chrome.newPage();
-        await page.goto('https://www.biblegateway.com/passage/?search=Revelation 22&version=ASV');
+        await page.goto(`https://www.biblegateway.com/passage/?search=Revelation 22&version=${config.bibleVersion}`);
     });
 
     after(async () => { 

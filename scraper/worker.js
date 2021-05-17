@@ -34,11 +34,23 @@ class Worker {
             return document.querySelector('p .text').classList[1].split('-')[0];
         })
 
-        // Get the book name
+        // Get the book name from a string which may contain a chapter number
+        // Needs to work for:
+        // - Genesis 1 => Genesis
+        // - 1 Chronicles 1 => 1 Chronicles
+        // - 2 John => 2 John
         await page.waitForSelector('.dropdown-display-text');
         work.book = await page.evaluate(() => {
             let tokens = document.querySelector('.dropdown-display-text').textContent.trim().split(' ');
-            return tokens.slice(0, tokens.length-1).join(' ');
+            let lastToken = tokens.pop();
+            if(isNaN(lastToken)){
+                tokens.push(lastToken);
+                return tokens.join(' ');
+            }
+            else{
+                return tokens.join(' ');
+            }
+            
         });
 
         // Load the verses into an array of strings

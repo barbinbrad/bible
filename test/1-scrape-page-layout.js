@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+const config = require('../config');
 const { expect }  = require('chai');
 const browser = require('../scraper/browser');
 
@@ -10,7 +10,7 @@ describe('Bible Scraping Page Layout Test', () => {
     before(async () => { 
         chrome = await browser.startBrowser();
         page = await chrome.newPage();
-        await page.goto('https://www.biblegateway.com/passage/?search=Genesis 1&version=NRSVCE');
+        await page.goto(`https://www.biblegateway.com/passage/?search=Genesis 1&version=${config.bibleVersion}`);
     });
 
     after(async () => { 

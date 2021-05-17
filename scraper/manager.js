@@ -29,7 +29,7 @@ async function manage(chromePromise){
     }
     
     try{      
-        let pageToScrape = 'https://www.biblegateway.com/passage/?search=Genesis 1&version=NRSVCE';
+        let pageToScrape = `https://www.biblegateway.com/passage/?search=Genesis 1&version=${config.bibleVersion}`;
         let previous = null;
         let scraping = true;
         let number = 0;
