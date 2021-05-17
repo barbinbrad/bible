@@ -1,7 +1,7 @@
 document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
-const development = true;
+const development = false;
 // TODO: service worker version should only be declared in one place
 const serviceWorkerVersion = '0.0.1';
 
