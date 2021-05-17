@@ -392,8 +392,8 @@ new Vue({
 
 if (development == false) {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service-worker.js', {
-                scope: './'
+        navigator.serviceWorker.register('../../service-worker.js', {
+                scope: '../../'
             })
             .then(function(registration) {
                 console.log('Service Worker Registered');
