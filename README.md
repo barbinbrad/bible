@@ -3,7 +3,9 @@ This imperfect repo creates a "perfect" website&ndash;a minimal, mostly-static, 
 
 The basic gist is that a puppeteer web-scraper saves the results to SQLite database, which is then used to statically render each chapter of the Bible, with some navigation in Vue.
 
-To create the "perfect" website using the imperfect repo, run `npm run scrape && npm run build`. The static site is generated in the `output` folder. To run the site locally run `cd ./output && python -m http.server`.
+To build the "perfect" website using the imperfect repo, run `npm run build`. The static site is generated in the `output` folder. To run the site locally run `cd ./output && python -m http.server`.
+
+To run the scraper, set the version in `config.js` and run `npm run scrape`.
 
 What makes a "perfect" website?
 ------
@@ -15,7 +17,7 @@ What makes a "perfect" website?
 
 :fire: Content 
 ------
-Whether or not the bible is worthwhile is up to you to decide, *dear reader*. From a content-perspective, the big problem is copyright. Bible translators do not share open-source values. To get around this problem, there’s two possibilities:
+Whether or not the bible is worthwhile is up to you to decide. From a content-perspective, the big problem is copyright. Bible translators do not share open-source values. To get around this problem, there’s two possibilities:
 1. Use the ASV version that’s written in old-English.
 2. Scrape a more readable, copyrighted version and accept the consequences. 
 

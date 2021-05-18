@@ -1,6 +1,6 @@
 const config = {
     databaseLocation: './database/bible.db',
-    bibleVersion: 'ASV',
+    bibleVersion: 'NRSVCE',
 }
 
 module.exports = config;
