@@ -15,21 +15,24 @@ What makes a "perfect" website?
 
 :fire: Content 
 ------
-Whether or not the bible is worthwhile is up to you to decide, *dear reader*. From a content-perspective, the big problem is copyright. Bible translators do not share open-source values. To get around this problem, I've decided to scrape the the ASV version since it is in the public domain. Unfortunately, it's a bit old-Englishy.
+Whether or not the bible is worthwhile is up to you to decide, *dear reader*. From a content-perspective, the big problem is copyright. Bible translators do not share open-source values. To get around this problem, there’s two possibilities:
+1. Use the ASV version that’s written in old-English.
+2. Scrape a more readable, copyrighted version and accept the consequences. 
 
+I choose to accept the consequences because I want you to enjoy reading the Bible.
 
 :mechanical_arm: Performance 
 ------
-Performance evaluation metrics are defined by Google's [Lighthouse](https://developers.google.com/web/tools/lighthouse) tool. According to these metrics, the "perfect" website scores perfectly across all categories. 
+Performance evaluation metrics are defined by [Google's Lighthouse tool](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fminimalbible.com%2Fread%2FGenesis%2B1%2F). According to these metrics, the "perfect" website scores perfectly across all categories. 
 
 To optimize performance, the following strategy was used:
 
-- Pre-render everything besides search components to static html
-- Pre-cache pages from all outbound links with service worker
+- [Pre-render everything](#) besides search components to static html
+- [Pre-cache pages](#) from all outbound links with service worker
 - Minimize and cache all assets with Cloudflare DNS
 - Minimize the amount of external dependencies (like custom fonts and JS).
 
-All generated files are under 10KB except `output/assets/js/vue.js (121KB)` and `output/assets/read/chapter.json (122KB)`. These are both low-hanging fruit for performance enhacements.
+All generated files are under 10KB except `output/assets/js/vue.js (101KB)` and `output/assets/read/chapter.json (122KB)`. These are both low-hanging fruit for performance enhacements.
 
 
 :convenience_store: Accessibility 
@@ -55,6 +58,8 @@ The scraping and the building are decoupled through a SQLite database located in
 
 :brain: Inspiration
 -------
+- Aaron Swartz [Who writes Wikipedia?](http://www.aaronsw.com/weblog/whowriteswikipedia)
 - Manuel Matuzo: [My current HTML boilerplate](https://www.matuzo.at/blog/html-boilerplate/)
 - Barry Smith: [motherf***ingwebsite.com](http://motherfuckingwebsite.com/)
+- Jon Staab [ESV Bible](https://github.com/staab/esv)
 

@@ -1,8 +1,7 @@
 {
-  "name": "king-james",
-  "version": "1.0.0",
-  "description": "a puppeteer-based web scraper for the catholic bible",
-  "main": "index.js",
+  "name": "the-perfect-website",
+  "version": "0.0.1",
+  "description": "A minimal, static, progressive Bible",
   "scripts": {
     "scrape": "node scraper/index.js",
     "prebuild": "node build/build-books-json.js && node build/build-chapters-json.js",
