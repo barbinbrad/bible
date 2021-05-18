@@ -1,7 +1,7 @@
 document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
-const development = false;
+const development = true;
 // TODO: service worker version should only be declared in one place
 const serviceWorkerVersion = '0.0.1';
 
@@ -201,7 +201,7 @@ Vue.component('autocomplete', {
     },
     methods: {
         fetchData: function(e) {
-            if (this.inputtext.length >= 1 && this.isFocus) {
+            if (this.inputtext.length >= 0 && this.isFocus) {
                 this.$store.dispatch('searchBible', this.inputtext)
             } else {
                 this.$store.dispatch('resetData')
@@ -232,6 +232,9 @@ Vue.component('autocomplete', {
         },
         inputFocus: function(val) {
             this.$store.dispatch('inputFocus', val);
+            if(val){
+                this.fetchData();
+            }
         }
     },
 
@@ -316,6 +319,26 @@ Vue.component('bookmark-dropdown', {
 
         this.bookmarkTitle = (pageTitle) ? pageTitle : '';
         this.bookmarkLink = (pageLink) ? pageLink : '';
+    },
+    mounted: function(){
+        // get all outbound links in the DOM
+        let links = [...document.querySelectorAll('a')];
+        let urls = [];
+
+        if (links.length == 0) {
+            return;
+        }
+
+        caches.open(`minimal-bible-${serviceWorkerVersion}`).then(function(cache) {
+            // iterate over the links in the DOM
+            for (link of links) {
+                // get the relative URL
+                let url = new URL(link.href)
+                urls.push(url.pathname);
+            }
+            // cache all outbound links
+            cache.addAll(urls);
+        });
     },
     data() {
         return {
@@ -403,26 +426,4 @@ if (development == false) {
             console.log('Service Worker Ready');
         });
     }
-
-
-    window.onload = (event) => {
-        // get all outbound links in the DOM
-        let links = [...document.querySelectorAll('a')];
-        let urls = [];
-
-        if (links.length == 0) {
-            return;
-        }
-
-        caches.open(`minimal-bible-${serviceWorkerVersion}`).then(function(cache) {
-            // iterate over the links in the DOM
-            for (link of links) {
-                // get the relative URL
-                let url = new URL(link.href)
-                urls.push(url.pathname);
-            }
-            // cache all outbound links
-            cache.addAll(urls);
-        });
-    };
 }

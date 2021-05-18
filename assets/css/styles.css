@@ -262,7 +262,11 @@ body{
     position: absolute
   }
 
-  .search .results{
+  .search .input input{
+    font-size: 1em;
+  }
+
+  .search .results, .bookmark-dropdown-options{
     margin-top: 0;
     max-width: 100%;
     font-size: 1.25rem;
@@ -274,7 +278,7 @@ body{
     
   }
 
-  .search .results .list-group{
+  .search .results .list-group, .bookmark-dropdown-options ul{
     max-height: calc(100vh - 65px);
     border-radius: 0;
   }
@@ -288,15 +292,6 @@ body{
 .prev{
   left: 0;
   border-left: none;
-}
-
-
-h1 {
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 6em;
-    color: #2d2d2d;
-    letter-spacing:-.04em
 }
 
 ul {
@@ -315,36 +310,11 @@ h2 {
     margin:0 0 2em
 }
 
-h3 {
-    color: #aaa;
-    font-size:1.5em
-}
-
 p {
     font-size: 1.25rem;
     color: #333;
     line-height:1.825
 }
-
-.button{
-    font-size: 1rem;
-    line-height: 1.5rem;
-    padding: .75rem 1rem;
-    box-shadow: 0 0 #0000,0 0 #0000,0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border-radius: .375rem;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    font-weight: 700;
-    text-decoration: none;
-    border: 1px;
-}
-
-.button-primary{
-    background-image: linear-gradient(to right,#7c3aed,#4f46e5);
-    color: white;
-}
-
 
 @media only screen and (max-width: 720px) {
    
