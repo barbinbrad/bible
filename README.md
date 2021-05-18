@@ -14,6 +14,8 @@ What makes a "perfect" website?
 4. :convenience_store: Accessibility: is it friendly to humans and machines alike?
 5. :hear_no_evil: Privacy: does it demand anything in return?
 
+![Lighthouse Score](/barbinbrad/the-perfect-website/master/lighthouse.png)
+
 
 :fire: Content 
 ------
@@ -25,7 +27,7 @@ I choose to accept the consequences because I want you to enjoy reading the Bibl
 
 :mechanical_arm: Performance 
 ------
-Performance evaluation metrics are defined by [Google's Lighthouse tool](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fminimalbible.com%2Fread%2FGenesis%2B1%2F). According to these metrics, the "perfect" website scores perfectly across all categories. 
+Performance evaluation metrics are defined by [Google's Lighthouse tool](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fminimalbible.com%2Fread%2FGenesis%2B1%2F). According to these metrics, the "perfect" website scores 90+ across all categories. 
 
 To optimize performance, the following strategy was used:
 
@@ -50,12 +52,12 @@ To optimize accessibility for humans, the following strategy was used:
 
 :hear_no_evil: Privacy 
 ------
-The goal of the "perfect" website is to encourage more frequent reading of the Bible in any enviroment with any technology. Since no tracking analytics is used, it is impossible to say whether the goal is being accomplished. But that's OK. Because God sees what is done in secret.
+The goal of the "perfect" website is to encourage more frequent reading of the Bible in any enviroment with any technology. Without tracking analytics, it is difficult to say whether the goal is being accomplished. But that's OK. Because God sees what is done in secret.
 
 
 :microscope: Technology
 ------
-The scraping and the building are decoupled through a SQLite database located in `./database/bible.db`. [Puppeteer](https://github.com/checkly/puppeteer-examples) is used for scraping. Node is used for building to limit the language, but it's just basic string concatenation. Vue is used for the navigation components because it feels good. 
+The scraping and the building are decoupled through a SQLite database located in `database/bible.db`. [Puppeteer](https://github.com/checkly/puppeteer-examples) is used for scraping. Node is used for building to limit the language, but it's just basic string concatenation. Vue is used for the navigation components because it feels good. 
 
 
 :brain: Inspiration
