@@ -14,7 +14,8 @@
 <body>
     <script>
         const bookmark = localStorage.getItem('bookmark-link') ?? 'read/Genesis+1/';
-        window.location.href = bookmark;
+        const y = localStorage.getItem('bookmark-y-offset') ?? 0;
+        window.location.href = `${bookmark}?y=${y}`;
     </script>
 </body>
 </html>

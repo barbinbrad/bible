@@ -1,10 +1,8 @@
 document.documentElement.classList.remove('no-js');
 document.documentElement.classList.add('js');
 
-const development = true;
-// TODO: service worker version should only be declared in one place
+const development = false;
 const serviceWorkerVersion = '0.0.1';
-
 
 const getAutocompleteResults = function(state, q) {
     // If the query could be for more than one book, return the books
@@ -52,12 +50,10 @@ const mutations = {
         state.chapters = payload;
     },
     UPDATE_AUTOCOMPLETE_LIST(state, newList) {
-
-        state.autocompleteList = newList
+        state.autocompleteList = newList;
     },
     RESET_AUTOCOMPLETE(state) {
-
-        state.autocompleteList = []
+        state.autocompleteList = [];
     },
     UPDATE_AUTOCOMPLETE_INPUT(state, text) {
 
@@ -72,7 +68,7 @@ const mutations = {
         if (state.autocompleteIndex === '') {
             state.autocompleteIndex = 0;
         } else {
-            state.autocompleteIndex += val
+            state.autocompleteIndex += val;
             if (state.autocompleteIndex < 0) {
                 state.autocompleteIndex = 0;
             } else if (state.autocompleteIndex > 0 && state.autocompleteIndex > state.autocompleteList.length - 1) {
@@ -81,12 +77,10 @@ const mutations = {
         }
     },
     RESET_AUTOCOMPLETE_FOCUS(state) {
-
-        state.autocompleteIndex = ''
+        state.autocompleteIndex = '';
     },
     UPDATE_AUTOCOMPLETE_FOCUS(state, val) {
-
-        state.inputFocus = val
+        state.inputFocus = val;
     }
 };
 
@@ -121,7 +115,7 @@ const actions = {
         commit,
         state
     }, q) {
-        var searchResult = getAutocompleteResults(state, q);
+        let searchResult = getAutocompleteResults(state, q);
         commit('UPDATE_AUTOCOMPLETE_LIST', searchResult);
         commit('ADJUST_AUTOCOMPLETE_FOCUS', 0);
     },
@@ -181,30 +175,30 @@ Vue.component('autocomplete', {
     computed: {
         autocompleteList() {
             if (this.isFocus) {
-                return this.$store.state.autocompleteList
+                return this.$store.state.autocompleteList;
             } else {
-                return []
+                return [];
             }
         },
         inputtext: {
             get() {
-                return this.$store.state.autocompleteInput
+                return this.$store.state.autocompleteInput;
             },
             set(value) {
                 this.$store.dispatch('changeInput', value);
             }
         },
         isFocus() {
-            return this.$store.state.inputFocus
+            return this.$store.state.inputFocus;
         }
 
     },
     methods: {
         fetchData: function(e) {
             if (this.inputtext.length >= 0 && this.isFocus) {
-                this.$store.dispatch('searchBible', this.inputtext)
+                this.$store.dispatch('searchBible', this.inputtext);
             } else {
-                this.$store.dispatch('resetData')
+                this.$store.dispatch('resetData');
             }
         },
         setFocus: function(e) {
@@ -232,7 +226,7 @@ Vue.component('autocomplete', {
         },
         inputFocus: function(val) {
             this.$store.dispatch('inputFocus', val);
-            if(val){
+            if (val) {
                 this.fetchData();
             }
         }
@@ -320,25 +314,29 @@ Vue.component('bookmark-dropdown', {
         this.bookmarkTitle = (pageTitle) ? pageTitle : '';
         this.bookmarkLink = (pageLink) ? pageLink : '';
     },
-    mounted: function(){
-        // get all outbound links in the DOM
-        let links = [...document.querySelectorAll('a')];
-        let urls = [];
+    mounted: function() {
+        // TODO: understand lifecycle hooks
+        setTimeout(() => { 
+            // get all outbound links in the DOM
+            let links = [...document.querySelectorAll('a')];
+            let urls = new Set();
 
-        if (links.length == 0) {
-            return;
-        }
-
-        caches.open(`minimal-bible-${serviceWorkerVersion}`).then(function(cache) {
-            // iterate over the links in the DOM
-            for (link of links) {
-                // get the relative URL
-                let url = new URL(link.href)
-                urls.push(url.pathname);
+            if (links.length == 0) {
+                return;
             }
-            // cache all outbound links
-            cache.addAll(urls);
-        });
+            console.log(links);
+            caches.open(`minimal-bible-${serviceWorkerVersion}`).then(function(cache) {
+                // iterate over the links in the DOM
+                for (link of links) {
+                    // get the relative URL
+                    let url = new URL(link.href)
+                    urls.add(url.pathname);
+                }
+                // cache all outbound links
+                cache.addAll([...urls]);
+            });
+         }, 1000);
+        
     },
     data() {
         return {
@@ -361,13 +359,19 @@ Vue.component('bookmark-dropdown', {
     },
     methods: {
         get() {
-            window.location.href = this.bookmarkLink;
+            const y = localStorage.getItem('bookmark-y-offset') ?? 0;
+            const destination = (y == 0) ? this.bookmarkLink : `${this.bookmarkLink}?y=${y}`;
+            window.location.href = destination;
         },
         set() {
             let pageTitle = document.querySelector('h2').textContent;
             let pageLink = new URL(window.location.href);
+            let scrollY = window.scrollY;
+
             localStorage.setItem('bookmark-title', pageTitle);
             localStorage.setItem('bookmark-link', pageLink.pathname);
+            localStorage.setItem('bookmark-y-offset', scrollY);
+
             this.bookmarkTitle = pageTitle;
             this.bookmarkLink = pageLink;
             this.wasSet = true;
@@ -385,15 +389,15 @@ Vue.component('bookmark-dropdown', {
 });
 
 Vue.directive('click-outside', {
-    bind: function (el, binding, vnode) {
-        window.event = function (event) {
-            if (!(el == event.target || el.contains(event.target))) {
-                vnode.context[binding.expression](event);
+    bind: function(element, binding, node) {
+        window.event = function(event) {
+            if (!(element == event.target || element.contains(event.target))) {
+                node.context[binding.expression](event);
             }
         };
         document.body.addEventListener('click', window.event)
     },
-    unbind: function (el) {
+    unbind: function(element) {
         document.body.removeEventListener('click', window.event)
     },
 });
@@ -402,6 +406,12 @@ new Vue({
     el: '#app',
     store
 });
+
+window.addEventListener('load', (event) => {
+    const y = new URL(location).searchParams.get('y');
+    window.scroll(0, y);
+});
+
 
 
 /* 
@@ -415,15 +425,15 @@ new Vue({
 
 if (development == false) {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('../../service-worker.js', {
+        navigator.serviceWorker.register(`../../service-worker.js?v=${encodeURIComponent(serviceWorkerVersion)}`, {
                 scope: '../../'
             })
             .then(function(registration) {
-                console.log('Service Worker Registered');
+                //console.log('Service Worker Registered');
             });
 
         navigator.serviceWorker.ready.then(function(registration) {
-            console.log('Service Worker Ready');
+            //console.log('Service Worker Ready');
         });
     }
 }

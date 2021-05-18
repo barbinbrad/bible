@@ -1,8 +1,7 @@
-const version = '0.0.1';
-const cacheName = `minimal-bible-${version}`;
-
 self.addEventListener('install', e => {
-    e.waitUntil(
+  self.version = new URL(location).searchParams.get('v'); 
+  self.cacheName = `minimal-bible-${version}`; 
+  e.waitUntil(     
       caches.open(cacheName).then(cache => {
         return cache.addAll([
           `./`,
@@ -29,7 +28,7 @@ self.addEventListener('install', e => {
     }
 
     event.respondWith(
-      caches.open(cacheName)
+      caches.open(self.cacheName)
         .then(cache => cache.match(event.request, {ignoreSearch: true}))
         .then(response => {
         return response || fetch(event.request);
