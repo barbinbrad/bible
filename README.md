@@ -1,33 +1,16 @@
-# The "Perfect" Website
-This imperfect repo creates a "perfect" website&ndash;a minimal, mostly-static, progressive Bible hosted at [minimalbible.com](https://minimalbible.com/read/Luke+6). The code is fairly crappy, so if you can make an improvement, please feel welcome!
+# A Minimal Bible
+![Lighthouse Score](https://raw.githubusercontent.com/barbinbrad/the-perfect-website/master/lighthouse.png?raw=true)
 
-The basic gist is that a puppeteer web-scraper saves the results to SQLite database, which is then used to statically render each chapter of the Bible, with some navigation in Vue.
+This repo creates a minimal, mostly-static, progressive Bible hosted at [minimalbible.com](https://minimalbible.com/read/Luke+6). The basic gist is that a puppeteer web-scraper saves the results to SQLite database, which is then used to statically render each chapter of the Bible, with some navigation in Vue.
 
-To build the "perfect" website using the imperfect repo, run `npm run build`. The static site is generated in the `output` folder. To run the site locally run `cd ./output && python -m http.server`.
+To install the dependencies run `npm install`. To build the website, run `npm run build`. The static site is generated in the `output` folder. To run the site locally run `cd ./output && python -m http.server`.
 
 To run the scraper, set the version in `config.js` and run `npm run scrape`.
 
-What makes a "perfect" website?
-------
-1. :fire: Content: does the site provide something worthwhile? 
-2. :mechanical_arm: Performance: does the page load fast and without jank?
-4. :convenience_store: Accessibility: is it friendly to humans and machines alike?
-5. :hear_no_evil: Privacy: does it demand anything in return?
-
-
-:fire: Content 
-------
-Whether or not the bible is worthwhile is up to you to decide. From a content-perspective, the big problem is copyright. Bible translators do not share open-source values. To get around this problem, there’s two possibilities:
-1. Use the ASV version that’s written in old-English.
-2. Scrape a more readable, copyrighted version and accept the consequences. 
-
-I choose to accept the consequences because I want you to enjoy reading the Bible.
-
 :mechanical_arm: Performance 
 ------
-Performance evaluation metrics are defined by [Google's Lighthouse tool](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fminimalbible.com%2Fread%2FGenesis%2B1%2F). According to these metrics, the "perfect" website scores 90+ across all categories. 
+The site is high performance. [Google's Lighthouse tool](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fminimalbible.com%2Fread%2FGenesis%2B1%2F) scores the website as 100 across all categories (as of 5/21). 
 
-![Lighthouse Score](https://raw.githubusercontent.com/barbinbrad/the-perfect-website/master/lighthouse.png?raw=true)
 
 To optimize performance, the following strategy was used:
 
@@ -37,22 +20,6 @@ To optimize performance, the following strategy was used:
 - Minimize the amount of external dependencies (like custom fonts and JS).
 
 All generated files are under 10KB except `output/assets/js/vue.js (101KB)` and `output/assets/read/chapter.json (122KB)`. These are both low-hanging fruit for performance enhacements.
-
-
-:convenience_store: Accessibility 
-------
-To optimize accessibility for humans, the following strategy was used:
-
-- Remove distractions (subscripts, cross-references and annotations)
-- Allow cached pages to be read offline
-- Support no JavaScript environments
-- Implement some middleground between iPhone Reader View, and [tailwind UI](https://tailwindui.com/)
-- Use a decent `print.css`
-
-
-:hear_no_evil: Privacy 
-------
-The goal of the "perfect" website is to encourage more frequent reading of the Bible in any enviroment with any technology. Without tracking analytics, it is difficult to say whether the goal is being accomplished. But that's OK. Because God sees what is done in secret.
 
 
 :microscope: Technology
