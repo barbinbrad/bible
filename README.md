@@ -25,12 +25,14 @@ I choose to accept the consequences because I want you to enjoy reading the Bibl
 
 :mechanical_arm: Performance 
 ------
-Performance evaluation metrics are defined by [Google's Lighthouse tool](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fminimalbible.com%2Fread%2FGenesis%2B1%2F). According to these metrics, the "perfect" website scores perfectly across all categories. 
+Performance evaluation metrics are defined by [Google's Lighthouse tool](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fminimalbible.com%2Fread%2FGenesis%2B1%2F). According to these metrics, the "perfect" website scores 90+ across all categories. 
+
+![Lighthouse Score](https://raw.githubusercontent.com/barbinbrad/the-perfect-website/master/lighthouse.png?raw=true)
 
 To optimize performance, the following strategy was used:
 
-- [Pre-render everything](#) besides search components to static html
-- [Pre-cache pages](#) from all outbound links with service worker
+- [Pre-render everything](https://github.com/barbinbrad/the-perfect-website/blob/6537e1613d819dba253491a45fc18e05a668e838/build/build-pages.js#L10) besides search components to static html
+- [Pre-cache pages](https://github.com/barbinbrad/the-perfect-website/blob/6537e1613d819dba253491a45fc18e05a668e838/output/assets/js/scripts.js#L317) from all outbound links with service worker
 - Minimize and cache all assets with Cloudflare DNS
 - Minimize the amount of external dependencies (like custom fonts and JS).
 
@@ -50,12 +52,12 @@ To optimize accessibility for humans, the following strategy was used:
 
 :hear_no_evil: Privacy 
 ------
-The goal of the "perfect" website is to encourage more frequent reading of the Bible in any enviroment with any technology. Since no tracking analytics is used, it is impossible to say whether the goal is being accomplished. But that's OK. Because God sees what is done in secret.
+The goal of the "perfect" website is to encourage more frequent reading of the Bible in any enviroment with any technology. Without tracking analytics, it is difficult to say whether the goal is being accomplished. But that's OK. Because God sees what is done in secret.
 
 
 :microscope: Technology
 ------
-The scraping and the building are decoupled through a SQLite database located in `./database/bible.db`. [Puppeteer](https://github.com/checkly/puppeteer-examples) is used for scraping. Node is used for building to limit the language, but it's just basic string concatenation. Vue is used for the navigation components because it feels good. 
+The scraping and the building are decoupled through a SQLite database located in `database/bible.db`. [Puppeteer](https://github.com/checkly/puppeteer-examples) is used for scraping. Node is used for building to limit the language, but it's just basic string concatenation. Vue is used for the navigation components because it feels good. 
 
 
 :brain: Inspiration
