@@ -1,7 +1,7 @@
 # A Minimal Bible
 ![Lighthouse Score](https://raw.githubusercontent.com/barbinbrad/the-perfect-website/master/lighthouse.png?raw=true)
 
-This repo creates a minimal, mostly-static, progressive Bible hosted at [minimalbible.com](https://minimalbible.com/read/Luke+6). The basic gist is that a puppeteer web-scraper saves the results to SQLite database, which is then used to statically render each chapter of the Bible, with some navigation in Vue.
+This repo creates a minimal, mostly-static, progressive Bible hosted at [minimalbible.com](https://minimalbible.com/read/Luke+6). The basic gist is that a web-scraper saves the results to database, which is then used to statically render each chapter of the Bible. Dynamic navigation is done with JavaScript by caching the books and chapters to JSON.
 
 To install the dependencies run `npm install`. To build the website, run `npm run build`. The static site is generated in the `output` folder. To run the site locally run `cd ./output && python -m http.server`.
 
