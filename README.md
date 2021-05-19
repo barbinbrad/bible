@@ -32,7 +32,7 @@ Performance evaluation metrics are defined by [Google's Lighthouse tool](https:/
 To optimize performance, the following strategy was used:
 
 - [Pre-render everything](https://github.com/barbinbrad/the-perfect-website/blob/6537e1613d819dba253491a45fc18e05a668e838/build/build-pages.js#L10) besides search components to static html
-- [Pre-cache pages](https://github.com/barbinbrad/the-perfect-website/blob/6537e1613d819dba253491a45fc18e05a668e838/output/assets/js/scripts.js#L317) from all outbound links with service worker
+- [Pre-cache pages](https://github.com/barbinbrad/the-perfect-website/blob/04c138499f02b33fe30869ad65c7034a77b06966/output/assets/js/scripts.js#L385) from all outbound links with service worker
 - Minimize and cache all assets with Cloudflare DNS
 - Minimize the amount of external dependencies (like custom fonts and JS).
 
