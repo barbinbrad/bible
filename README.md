@@ -1,5 +1,5 @@
 # The "Perfect" Website
-This imperfect repo creates a "perfect" website&ndash;a minimal, mostly-static, progressive Bible hosted [here](https://minimalbible.com/read/Luke+6). The code is fairly crappy, so if you can make an improvement, please feel welcome!
+This imperfect repo creates a "perfect" website&ndash;a minimal, mostly-static, progressive Bible hosted at [minimalbible.com](https://minimalbible.com/read/Luke+6). The code is fairly crappy, so if you can make an improvement, please feel welcome!
 
 The basic gist is that a puppeteer web-scraper saves the results to SQLite database, which is then used to statically render each chapter of the Bible, with some navigation in Vue.
 
