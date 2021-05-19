@@ -14,8 +14,6 @@ What makes a "perfect" website?
 4. :convenience_store: Accessibility: is it friendly to humans and machines alike?
 5. :hear_no_evil: Privacy: does it demand anything in return?
 
-![Lighthouse Score](https://raw.githubusercontent.com/barbinbrad/the-perfect-website/master/lighthouse.png?raw=true)
-
 
 :fire: Content 
 ------
@@ -28,6 +26,8 @@ I choose to accept the consequences because I want you to enjoy reading the Bibl
 :mechanical_arm: Performance 
 ------
 Performance evaluation metrics are defined by [Google's Lighthouse tool](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fminimalbible.com%2Fread%2FGenesis%2B1%2F). According to these metrics, the "perfect" website scores 90+ across all categories. 
+
+![Lighthouse Score](https://raw.githubusercontent.com/barbinbrad/the-perfect-website/master/lighthouse.png?raw=true)
 
 To optimize performance, the following strategy was used:
 
