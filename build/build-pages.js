@@ -75,7 +75,8 @@ const VersesTable = require('../database/verses');
         html += components.BookmarkDropdown;
 
         html += '<script src="../../assets/js/vue.js"></script>';
-        html += '<script src="../../assets/js/scripts.js"></script>'
+        html += '<script src="../../assets/js/scripts.js"></script>';
+        html += '<script src="../../assets/js/defer.js" defer></script>';
         html += '</body>'
         html += '</html>';
         
